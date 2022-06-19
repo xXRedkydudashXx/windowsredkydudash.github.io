@@ -36,7 +36,7 @@
         <meta name="description" content="A custom operating system">
         <meta name="keywords" content="HTML, CSS, JavaScript">
         <meta name="author" content="xXRedkydudashXx">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Links -->
         <link rel="icon" type="image/x-icon" href="C/Assets/System33/Images/WinRedky.png">
@@ -44,12 +44,53 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/xp.css" />
         <link rel="stylesheet" href="C/Assets/System33/Plugins/windowtheme.css"/>
+        <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/css/jquery.terminal.min.css" rel="stylesheet"/>
         
-        <!-- Scripts -->
+        <!-- Scripts Link -->
         <script src="C/Assets/System33/Plugins/script.js"></script>
         <script src="C/Assets/System33/System33.js">console.log("Version: Pre-Alpha 1.0.2")</script>
+        <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/js/jquery.terminal.min.js"></script>
+
+
     </head>
-    <Body class="background1">
+    <Body class="background1" onload="
+
+var ix = 1;
+
+function DragLoop() {
+  setTimeout(function() {
+    //
+    var draggable = $('.window'); //element 
+
+draggable.on('mousedown', function(e){
+var dr = $(this).addClass('drag').css('cursor','s');
+height = dr.outerHeight();
+width = dr.outerWidth();
+ypos = dr.offset().top + height - e.pageY,
+xpos = dr.offset().left + width - e.pageX;
+$(document.body).on('mousemove', function(e){
+  var itop = e.pageY + ypos - height;
+  var ileft = e.pageX + xpos - width;
+  if(dr.hasClass('drag')){
+    dr.offset({top: itop,left: ileft});
+  }
+}).on('mouseup', function(e){
+    dr.removeClass('drag');
+});
+});
+    //
+    ix++;
+    if (ix < 10) {
+      DragLoop();
+    }
+  }, 3000)
+}
+
+DragLoop();">
         <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
         <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
         <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
