@@ -1,4 +1,4 @@
-# windowsredkydudash.github.io
+# Windows Redkydudash
 A custom operating system made by myself.
 
 This is a re-creation and a fan-made of a other "Operating System Website" named "Windows 93".
