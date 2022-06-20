@@ -45,7 +45,7 @@
         <link rel="stylesheet" href="https://unpkg.com/xp.css" />
         <link rel="stylesheet" href="C/Assets/System33/Plugins/windowtheme.css"/>
         <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/css/jquery.terminal.min.css" rel="stylesheet"/>
+        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/css/jquery.terminal.min.css" rel="stylesheet"/> -->
         
         <!-- Scripts Link -->
         <script src="C/Assets/System33/Plugins/script.js"></script>
@@ -53,7 +53,7 @@
         <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/js/jquery.terminal.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/js/jquery.terminal.min.js"></script>/* Because cause problems */ -->
 
 
     </head>
@@ -94,26 +94,37 @@ DragLoop();">
         <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
         <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
         <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
-
-        <div class="Creditstxt" onclick="OpenApp(1)">
-            <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png"alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-            <p style="color: white; font-size: 10px; padding-left: 10%;">Credits.txt</p>
-        </div>
         <div class="window centerxy" style="width: 300px;" id="WelcomeMessage">
-            <div class="title-bar">
-              <div class="title-bar-text">Welcome!</div>
-              <div class="title-bar-controls">
-                <button aria-label="Close" onclick="document.getElementById('WelcomeMessage').style.visibility = 'hidden';"></button>
-              </div>
-            </div>
-            <div class="window-body">
-                <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
-              <p>Welcome to Windows Redkydudash!</p>
-              <p>Note: the website is currectly in a Alpha.</p> 
-              ><blink>_</blink>
-              <button style="margin-left:35%;" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
+          <div class="title-bar">
+            <div class="title-bar-text">Welcome!</div>
+            <div class="title-bar-controls">
+              <button aria-label="Close" onclick="document.getElementById('WelcomeMessage').style.visibility = 'hidden';"></button>
             </div>
           </div>
+          <div class="window-body">
+              <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
+            <p>Welcome to Windows Redkydudash!</p>
+            <p>Note: the website is currectly in a Alpha.</p> 
+            ><blink>_</blink>
+            <button style="margin-left:35%;" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
+          </div>
+        </div>
+
+        <div class="Desktop">
+
+          <div id="appicon" onclick="OpenApp(1)">
+            <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png"alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
+            <p style="color: white; font-size: 10px; padding-left: 10%;">Credits.txt</p>
+          </div>
+          <br>
+          <div id="appicon" onclick="OpenApp(5)">
+            <img src="C/Assets/System33/Icons/Apps/d3j5pdx-474f27e6-fae7-4784-a4af-23245683a869-removebg-preview.png"alt="Color Picker App" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
+            <p style="color: white; font-size: 10px; padding-left: 10%;">Color Picker</p>
+          </div>
+
+        </div>
+
+        
 
         <div class="BottonBar">
             <div class="StartButton" onclick="SystemFunction(10)">
