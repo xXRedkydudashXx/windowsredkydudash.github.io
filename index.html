@@ -49,7 +49,7 @@
         
         <!-- Scripts Link -->
         <script src="C/Assets/System33/Plugins/script.js"></script>
-        <script src="C/Assets/System33/System33.js">console.log("Version: Pre-Alpha 1.0.3")</script>
+        <script src="C/Assets/System33/System33.js"></script>
         <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
@@ -91,9 +91,22 @@ $(document.body).on('mousemove', function(e){
 }
 
 DragLoop();">
-        <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
-        <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
-        <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
+
+        <div alt="AudioLibrary">
+          <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
+          <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
+          <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
+          <audio src="C/Assets/System33/Sounds/startup.wav" id="StartupSound">startup</audio>
+        </div>
+
+        <div class="bootscreen">
+          <img src="C/Assets/System33/Boot/WindowsRedkydudashLogo.png" alt="WinRedkyStartLogo" class="startup" height="45%" style="margin-left: 35%; margin-top: 12%;" draggable="false"> <br>
+          <img src="C/Assets/System33/Images/loading.gif" alt="WinRedkyStartLogo" class="startup2" style="margin-left: 42%; margin-top: 0%;" draggable="false" width="15%">
+        </div>
+
+
+
+
         <div class="window centerxy" style="width: 300px;" id="WelcomeMessage">
           <div class="title-bar">
             <div class="title-bar-text">Welcome!</div>
