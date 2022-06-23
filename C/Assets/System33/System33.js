@@ -1,7 +1,16 @@
 console.log("Hello World!")
+setTimeout(function(){
+    var sound = document.getElementById("StartupSound").cloneNode(true)
+    sound.play();
+}, 5000)
 
 
 function SystemFunction(Identifiant) {
+
+    if (Identifiant == 1) {
+        console.log("Version: Pre-Alpha 1.0.4");
+    }
+
     if (Identifiant == 10) {
         const StartMenu = document.getElementById("StartMenu")
         if (StartMenu.style.visibility === "hidden") {
@@ -13,6 +22,10 @@ function SystemFunction(Identifiant) {
         }
         
         
+    }
+    if (Identifiant == 11) {
+        CreateWindow("250px", "Restating Windows", "WRestart", false, false, false, false, " Restarting Windows Redkydudash", "information", false, false, null, 1, false)
+        setTimeout(function(){document.location.reload(true)}, 500)
     }
 }
 

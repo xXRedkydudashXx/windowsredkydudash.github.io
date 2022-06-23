@@ -14,8 +14,46 @@ pw {
     color: white;
 }
 
+.startup {
+    animation: normal;
+    animation-name: startup;
+    animation-duration: 5s;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+.startup2 {
+    animation: normal;
+    animation-name: startup2;
+    animation-duration: 5s;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+
+.bootscreen {
+    background-color: gray;
+    display: block;
+    z-index: 99;
+    height: 101%;
+    width: 101%;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50.05%) translateY(-11px);
+    cursor: none;
+    animation: normal;
+    animation-name: vanish;
+    animation-duration: 5s;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-timing-function: steps(1);
+    animation-iteration-count: 1;
+}
+
 .centerxy {
-    position: absolute;
+    position: fixed;
     display: block;
     top: 50%;
     left: 50%;
@@ -61,6 +99,16 @@ prsod {
     font: Arial;
 }
 
+@keyframes vanish {
+    0% {
+        visibility: visible;
+    }
+
+    100% {
+        visibility: hidden;
+    }
+}
+
 .StartMenu {
     width: 150px;
     height: 300px;
@@ -83,6 +131,50 @@ prsod {
         visibility: visible;
         opacity: 1;
     }
+    
+}
+
+@keyframes startup {
+    0% {
+        visibility: visible;
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    10% {
+        opacity: 1;
+        transform: scale(0.82);
+    }
+    90% {
+        opacity: 1;
+        transform: scale(0.98);
+    }
+    100% {
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(1);
+    }
+    
+}
+
+@keyframes startup2 {
+    0% {
+        visibility: visible;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+
+    }
+    90% {
+        opacity: 1;
+
+    }
+    100% {
+        visibility: hidden;
+        opacity: 0;
+      
+    }
+    
 }
 
 blink {
