@@ -49,7 +49,7 @@
         
         <!-- Scripts Link -->
         <script src="C/Assets/System33/Plugins/script.js"></script>
-        <script src="C/Assets/System33/System33.js">console.log("Version: Pre-Alpha 1.0.2")</script>
+        <script src="C/Assets/System33/System33.js">console.log("Version: Pre-Alpha 1.0.3")</script>
         <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
@@ -132,7 +132,8 @@ DragLoop();">
             <div style="display:inline-block;" class="StartText" unselectable="on" onselectstart="return false;" onmousedown="return false;">Start</div>
             </div>
             <div class="StartMenu" id="StartMenu" style="visibility: hidden;">
-                <button style="margin-left: 25%;" onclick="Execute('CloseAllWindows')">Close All Windows</button>
+              <button style="margin-left: 0%;" onclick="Execute('CloseAllWindows')">Close All Windows</button> <br>
+              <button style="margin-left: 0%;" onclick="SystemFunction(11)">Reboot</button> <br>
             </div>
         </div>
     </Body>
