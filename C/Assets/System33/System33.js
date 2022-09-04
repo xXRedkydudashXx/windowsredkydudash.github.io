@@ -1,14 +1,33 @@
 console.log("Hello World!")
+
+// Functions needed
+function sleep(ms) {    // Remember, use it only in async functions
+    return new Promise(res => setTimeout(res, ms));
+  }
+function wait(seconds) {  // Used for normal waiting
+    const date = Date.now();
+    let currentDate = null;
+    var milliseconds = seconds*1000
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+//
+
 setTimeout(function(){
-    var sound = document.getElementById("StartupSound").cloneNode(true)
-    sound.play();
+    var element = document.getElementById("bootscreen")
+    if(typeof(element) != 'undefined' && element != null){
+        var sound = document.getElementById("StartupSound").cloneNode(true)
+        sound.play();
+    }
 }, 5000)
 
+setInterval(function () {$( ".window" ).draggable();}, 1000);
 
 function SystemFunction(Identifiant) {
 
     if (Identifiant == 1) {
-        console.log("Version: Pre-Alpha 1.0.4");
+        console.log("Version: Pre-Alpha 1.0.5");
     }
 
     if (Identifiant == 10) {
@@ -24,8 +43,12 @@ function SystemFunction(Identifiant) {
         
     }
     if (Identifiant == 11) {
-        CreateWindow("250px", "Restating Windows", "WRestart", false, false, false, false, " Restarting Windows Redkydudash", "information", false, false, null, 1, false)
-        setTimeout(function(){document.location.reload(true)}, 500)
+        async function reboot() {
+            CreateWindow("200px", "Restating Windows", "WRestart", false, false, false, false, " Restarting Windows Redkydudash", "information", false, false, null, 0, null, 0, false)
+            await sleep(500);
+            document.location.reload(true)
+        }
+        reboot()
     }
 }
 
@@ -49,24 +72,124 @@ function OpenApp(App) {
     }
     if (App === 5) {
         if (document.getElementById("ColorPicker") === null) {
-            CreateIFrameWindow("200px", "200px", "Color Picker", "ColorPicker", true, false, false, true, "C/Assets/Programs/colorpicker.html", false, false)
+            const RWindow = document.createElement("div") // Window Tab
+    RWindow.className = 'window'
+    RWindow.style.width = "200px"
+    RWindow.style.height = "200px"
+    RWindow.id = "ColorPickerApp"
+    RWindow.style.position = "absolute"         
+    const RWindowTitleBar = document.createElement("div") // Window Title
+    RWindowTitleBar.className = "title-bar"
+    RWindow.appendChild(RWindowTitleBar)
+    const RWindowTitleText = document.createElement("div")
+    RWindowTitleText.insertAdjacentText("afterbegin", "Color Picker")
+    RWindowTitleText.className = "title-bar-text"
+    RWindowTitleBar.appendChild(RWindowTitleText)
+    const RWindowTitleControls = document.createElement("div")
+    RWindowTitleControls.className = "title-bar-controls"
+    RWindowTitleBar.appendChild(RWindowTitleControls)
+        const RWindowHelpButton = document.createElement("button")
+        RWindowHelpButton.ariaLabel = "Help"
+        RWindowTitleControls.appendChild(RWindowHelpButton)
+        const RWindowCloseButton = document.createElement("button")
+        RWindowCloseButton.ariaLabel = "Close"
+        RWindowTitleControls.appendChild(RWindowCloseButton)
+        RWindowCloseButton.onclick = function(){RWindow.remove()}
+    const RWindowBody = document.createElement("div")
+    RWindowBody.className = "window-body"
+    RWindowBody.style.height = "80%"
+    RWindow.appendChild(RWindowBody)
+    const RWindowBodyIFrame = document.createElement("iframe")
+    RWindowBody.appendChild(RWindowBodyIFrame)
+    //dragElement(RWindow)
+    document.body.appendChild(RWindow)
+    RWindowBodyIFrame.src = "C/Assets/Programs/colorpicker.html"
+    RWindowBodyIFrame.height = "100%"
+    RWindowBodyIFrame.width = "100%"
+        }
+    }
+    if (App === 'clock') {
+        if (document.getElementById("Clock") === null) {
+            CreateIFrameWindow("300px", "300px", "Clock", "ClockWindow", true, false, false, false, "C/Assets/Programs/clock.html", false, false)
+        }
+    }
+    if (App === 'websitebrowser') {
+        if (document.getElementById("WebsiteBrowser") === null) {
+            const RWindow = document.createElement("div") // Window Tab
+            RWindow.className = 'window'
+            RWindow.style.width = "1025px"
+            RWindow.style.height = "600px"
+            RWindow.id = "WebsiteBrowser"
+            RWindow.style.position = "absolute"         
+            const RWindowTitleBar = document.createElement("div") // Window Title
+            RWindowTitleBar.className = "title-bar"
+            RWindow.appendChild(RWindowTitleBar)
+            const RWindowTitleText = document.createElement("div")
+            RWindowTitleText.insertAdjacentText("afterbegin", "Website Browser")
+            RWindowTitleText.className = "title-bar-text"
+            RWindowTitleBar.appendChild(RWindowTitleText)
+            const RWindowTitleControls = document.createElement("div")
+            RWindowTitleControls.className = "title-bar-controls"
+            RWindowTitleBar.appendChild(RWindowTitleControls)
+                // const RWindowHelpButton = document.createElement("button")
+                // RWindowHelpButton.ariaLabel = "Help"
+                // RWindowTitleControls.appendChild(RWindowHelpButton)
+                // const RWindowMinimizeButton = document.createElement("button")
+                // RWindowMinimizeButton.ariaLabel = "Minimize"
+                // RWindowTitleControls.appendChild(RWindowMinimizeButton)
+                // const RWindowMaximizeButton = document.createElement("button")
+                // RWindowMaximizeButton.ariaLabel = "Maximize"
+                // RWindowTitleControls.appendChild(RWindowMaximizeButton)
+                const RWindowCloseButton = document.createElement("button")
+                RWindowCloseButton.ariaLabel = "Close"
+                RWindowTitleControls.appendChild(RWindowCloseButton)
+                RWindowCloseButton.onclick = function(){RWindow.remove()}
+            const RWindowBody = document.createElement("div")
+            RWindowBody.className = "window-body"
+            RWindowBody.style.height = "88%"
+            RWindow.appendChild(RWindowBody)
+            const RWindowBodyIFrame = document.createElement("iframe")
+            //dragElement(RWindow)
+            document.body.appendChild(RWindow)
+            RWindowBodyIFrame.src = "https://www.dogpile.com/"
+            RWindowBodyIFrame.height = "100%";
+            RWindowBodyIFrame.width = "1000";
+            RWindowBodyIFrame.style.overflow = "auto";
+            const RWindowBodyIFrameSearchBar = document.createElement("input");
+            RWindowBodyIFrameSearchBar.setAttribute("type", "text");
+            RWindowBodyIFrameSearchBar.size = 182.5;
+            RWindowBody.appendChild(RWindowBodyIFrameSearchBar);
+            const RWindowBodyIFrameSearchBarButton = document.createElement("button");
+            RWindowBodyIFrameSearchBarButton.textContent = "Search";
+            RWindowBody.appendChild(RWindowBodyIFrameSearchBarButton);
+            RWindowBody.appendChild(RWindowBodyIFrame);
+            RWindowBodyIFrameSearchBarButton.onclick = function(){
+            var input = RWindowBodyIFrameSearchBar.value
+            
+            if(input.match(/\bhttp(.)*/)) {
+                RWindowBodyIFrame.src = input;
+            } else {
+                input = "http://" + input;
+                RWindowBodyIFrame.src = input;
+            }   
+            }
         }
     }
     if (App === "Prank1") {
         for (let i = 0; i < 12; i++) {
-            setTimeout(function(){CreateWindow("250px", "PrankError", "Error", true, false, false, false, "This is a spam error", "error", (Math.round(Math.random()) * 2.5 - 2)*(Math.random()*300) +"px", (Math.round(Math.random()) * 2.1 - 1)*(Math.random()*300) +"px", "Close", 1, true)},i*100*i/10)
+            setTimeout(function(){CreateWindow("250px", "PrankError", "Error", true, false, false, false, "This is a spam error", "error", (Math.round(Math.random()) * 2.5 - 2)*(Math.random()*300) +"px", (Math.round(Math.random()) * 2.1 - 1)*(Math.random()*300) +"px", "Close", 1, null, 0, true)},i*100*i/10)
         }
     }
 }
 
 function Execute(Progarm){
     if (Progarm == "CloseAllWindows") {
-        CreateWindow("350px", "CloseAllWindowsWindow", "Close all windows", true, false, false, false, "Are you shure?", "question", false, false, "Yes", 10, true)
+        CreateWindow("350px", "CloseAllWindowsWindow", "Close all windows", true, false, false, false, "Are you shure?", "question", false, false, "Yes", 10, "No", 1, true)
     }
 }
 
 // Create a window
-function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, BodyText, MessageIcon, MarginLeft, MarginTop, Button1, Button1Function, PlaySound) {
+function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, BodyText, MessageIcon, MarginLeft, MarginTop, Button1, Button1Function, Button2, Button2Function, PlaySound) {
     const RWindow = document.createElement("div") // Window Tab
     RWindow.className = 'window centerxy'
     RWindow.style.width = Width
@@ -157,6 +280,23 @@ function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMa
 
         RWindowBody.appendChild(RWindowBodyButton1)
     }
+    if (Button2 !== null) {
+        const RWindowBodyButton2 = document.createElement("button")
+        RWindowBodyButton2.textContent = Button2
+        RWindowBodyButton2.style.marginLeft = "5%"
+        if (Button2Function === 1) {
+            RWindowBodyButton2.onclick = function(){RWindow.remove()}
+        } else if (Button2Function === 10) {
+            RWindowBodyButton2.onclick = function(){RWindow.remove()
+                const windows = document.querySelectorAll('.window')
+                windows.forEach(window => {
+                    window.remove()
+                })}
+            
+        }
+
+        RWindowBody.appendChild(RWindowBodyButton2)
+    }
     //dragElement(RWindow)
     document.body.appendChild(RWindow)
     if (PlaySound === true) {
@@ -223,7 +363,7 @@ function CreateIFrameWindow(Width, Height, Title, Id, HasCloseButton, HasMinimiz
     }
     const RWindowBody = document.createElement("div")
     RWindowBody.className = "window-body"
-    RWindowBody.style.height = Height-(Height/2)+"px"
+    RWindowBody.style.height = "85%"
     RWindow.appendChild(RWindowBody)
     const RWindowBodyIFrame = document.createElement("iframe")
     RWindowBody.appendChild(RWindowBodyIFrame)
