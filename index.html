@@ -45,109 +45,149 @@
         <link rel="stylesheet" href="https://unpkg.com/xp.css" />
         <link rel="stylesheet" href="C/Assets/System33/Plugins/windowtheme.css"/>
         <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all">
-        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/css/jquery.terminal.min.css" rel="stylesheet"/> -->
+        <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/loadingbar/loading-bar.min.css"/>
+        <link href="https://unpkg.com/jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
         
         <!-- Scripts Link -->
         <script src="C/Assets/System33/Plugins/script.js"></script>
         <script src="C/Assets/System33/System33.js"></script>
         <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.3/js/jquery.terminal.min.js"></script>/* Because cause problems */ -->
+        <script type="text/javascript" src="C/Assets/System33/Plugins/loadingbar/loading-bar.min.js"></script>
+        <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.js"></script>
 
 
     </head>
     <Body class="background1" onload="
 
-var ix = 1;
+// var ix = 1;
 
-function DragLoop() {
-  setTimeout(function() {
-    //
-    var draggable = $('.window'); //element 
+// function DragLoop() {
+//   setTimeout(function() {
+//     //
+//     var draggable = $('.window'); //element 
 
-draggable.on('mousedown', function(e){
-var dr = $(this).addClass('drag').css('cursor','s');
-height = dr.outerHeight();
-width = dr.outerWidth();
-ypos = dr.offset().top + height - e.pageY,
-xpos = dr.offset().left + width - e.pageX;
-$(document.body).on('mousemove', function(e){
-  var itop = e.pageY + ypos - height;
-  var ileft = e.pageX + xpos - width;
-  if(dr.hasClass('drag')){
-    dr.offset({top: itop,left: ileft});
-  }
-}).on('mouseup', function(e){
-    dr.removeClass('drag');
-});
-});
-    //
-    ix++;
-    if (ix < 10) {
-      DragLoop();
-    }
-  }, 3000)
+// draggable.on('mousedown', function(e){
+// var dr = $(this).addClass('drag').css('cursor','s');
+// height = dr.outerHeight();
+// width = dr.outerWidth();
+// ypos = dr.offset().top + height - e.pageY,
+// xpos = dr.offset().left + width - e.pageX;
+// $(document.body).on('mousemove', function(e){
+//   var itop = e.pageY + ypos - height;
+//   var ileft = e.pageX + xpos - width;
+//   if(dr.hasClass('drag')){
+//     dr.offset({top: itop,left: ileft});
+//   }
+// }).on('mouseup', function(e){
+//     dr.removeClass('drag');
+// });
+// });
+//     //
+//     ix++;
+//     if (ix < 10) {
+//       DragLoop();
+//     }
+//   }, 3000)
+// }
+
+// DragLoop();">
+
+<div alt="AudioLibrary">
+  <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
+  <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
+  <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
+  <audio src="C/Assets/System33/Sounds/startup.wav" id="StartupSound">startup</audio>
+</div>
+
+<script>
+  $( function() {
+    $( "#draggable" ).draggable();
+    $( ".window" ).draggable();
+    $( ".Creditstxt" ).draggable();
+    $( ".ColorPicker" ).draggable();
+    $( ".Clock" ).draggable();
+    $( ".WebsiteBrowser" ).draggable();
+  } );
+
+  
+
+  </script>
+<div class="bootscreen" id="bootscreen">
+  <img src="C/Assets/System33/Boot/WindowsRedkydudashLogo.png" alt="WinRedkyStartLogo" class="startup" height="45%" style="margin-left: 35%; margin-top: 12%;" draggable="false"> <br>
+  <img src="C/Assets/System33/Images/loading.gif" alt="WinRedkyStartLogo" class="startup2" style="margin-left: 42%; margin-top: 0%;" draggable="false" width="15%">
+  <!-- <div   data-type="fill"
+  data-img="C/Assets/System33/Images/loading.gif" id="ldBarStatup" style="margin-left: 42%; margin-top: 0%; width:150px;"></div>
+  <script>
+    /* construct manually */
+    var bar1 = new ldBar("#ldBarStatup");
+    /* ldBar stored in the element */
+    var bar2 = document.getElementById('ldBarStatup').ldBar;
+    for (let i=0; i<10; i++) {
+   task(i);
 }
+  
+function task(i) {
+  setTimeout(function() {
+      bar1.set(i*35);
+  }, 1200 * i);
+}
+  </script> -->
 
-DragLoop();">
-
-        <div alt="AudioLibrary">
-          <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
-          <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
-          <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
-          <audio src="C/Assets/System33/Sounds/startup.wav" id="StartupSound">startup</audio>
-        </div>
-
-        <div class="bootscreen">
-          <img src="C/Assets/System33/Boot/WindowsRedkydudashLogo.png" alt="WinRedkyStartLogo" class="startup" height="45%" style="margin-left: 35%; margin-top: 12%;" draggable="false"> <br>
-          <img src="C/Assets/System33/Images/loading.gif" alt="WinRedkyStartLogo" class="startup2" style="margin-left: 42%; margin-top: 0%;" draggable="false" width="15%">
-        </div>
+</div>
 
 
 
 
-        <div class="window centerxy" style="width: 300px;" id="WelcomeMessage">
-          <div class="title-bar">
-            <div class="title-bar-text">Welcome!</div>
-            <div class="title-bar-controls">
-              <button aria-label="Close" onclick="document.getElementById('WelcomeMessage').style.visibility = 'hidden';"></button>
-            </div>
-          </div>
-          <div class="window-body">
-              <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
-            <p>Welcome to Windows Redkydudash!</p>
-            <p>Note: the website is currectly in a Alpha.</p> 
-            ><blink>_</blink>
-            <button style="margin-left:35%;" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
-          </div>
-        </div>
+<div class="window centerxy" style="width: 300px;" id="WelcomeMessage">
+  <div class="title-bar">
+    <div class="title-bar-text">Welcome!</div>
+    <div class="title-bar-controls">
+      <button aria-label="Close" onclick="document.getElementById('WelcomeMessage').style.visibility = 'hidden';"></button>
+    </div>
+  </div>
+  <div class="window-body">
+      <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
+    <p>Welcome to Windows Redkydudash!</p>
+    <p>Note: the website is currectly in a Alpha.</p> 
+    ><blink>_</blink>
+    <button style="margin-left:35%;" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
+  </div>
+</div>
 
-        <div class="Desktop">
+<div class="Desktop">
 
-          <div id="appicon" onclick="OpenApp(1)">
-            <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png"alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-            <p style="color: white; font-size: 10px; padding-left: 10%;">Credits.txt</p>
-          </div>
-          <br>
-          <div id="appicon" onclick="OpenApp(5)">
-            <img src="C/Assets/System33/Icons/Apps/d3j5pdx-474f27e6-fae7-4784-a4af-23245683a869-removebg-preview.png"alt="Color Picker App" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-            <p style="color: white; font-size: 10px; padding-left: 10%;">Color Picker</p>
-          </div>
+  <div id="appicon" ondblclick="OpenApp(1)" class="Creditstxt">
+    <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
+    <p style="color: white; font-size: 10px; padding-left: 10%; margin-top: 0%;">Credits.txt</p>
+  </div>
+  <div id="appicon" ondblclick="OpenApp(5)" class="ColorPicker">
+    <img src="C/Assets/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
+    <p style="color: white; font-size: 8px; padding-left: 22%; margin-top: 0%;">Color Picker</p>
+  </div>
+  <div id="appicon" ondblclick="OpenApp('clock')"  class="Clock">
+    <img src="C/Assets/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
+    <p style="color: white; font-size: 10px; padding-left: 20%; margin-top: 0%;">Clock</p>
+  </div>
+  <div id="appicon" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser">
+    <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; padding-left: 15%;" draggable="false">
+    <p style="color: white; font-size: 9px; padding-left: 10%; margin-top: 0%;">Website Browser (W.I.P.)</p>
+  </div>
+</div>
 
-        </div>
 
-        
 
-        <div class="BottonBar">
-            <div class="StartButton" onclick="SystemFunction(10)">
-            <img src="C/Assets/System33/Images/WinRedky.png" alt="WinRedkyStart" style="height: 27px; width:30px; margin-top: 2.5%;" draggable="false">
-            <div style="display:inline-block;" class="StartText" unselectable="on" onselectstart="return false;" onmousedown="return false;">Start</div>
-            </div>
-            <div class="StartMenu" id="StartMenu" style="visibility: hidden;">
-              <button style="margin-left: 0%;" onclick="Execute('CloseAllWindows')">Close All Windows</button> <br>
-              <button style="margin-left: 0%;" onclick="SystemFunction(11)">Reboot</button> <br>
-            </div>
-        </div>
+<div class="BottonBar">
+    <div class="StartButton" onclick="SystemFunction(10)">
+    <img src="C/Assets/System33/Images/WinRedky.png" alt="WinRedkyStart" style="height: 27px; width:30px; margin-top: 2.5%;" draggable="false">
+    <div style="display:inline-block;" class="StartText" unselectable="on" onselectstart="return false;" onmousedown="return false;">Start</div>
+    </div>
+    <div class="StartMenu" id="StartMenu" style="visibility: hidden;">
+      <button style="margin-left: 0%;" onclick="Execute('CloseAllWindows')">Close All Windows</button> <br>
+      <button style="margin-left: 0%;" onclick="SystemFunction(11)">Reboot</button> <br>
+    </div>
+</div>
     </Body>
 </html>
