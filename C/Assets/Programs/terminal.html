@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
+    </head>
+    <style>
+        .terminal {
+    --color: rgb(255, 0, 0);
+    --background: black;
+    --link-color: darkred;
+}
+    </style>
+    <body>
+        <script>
+$(".terminal").css({
+    "--color": "red",
+})
+var stack = [];
+$('body').terminal({
+  stack: {
+    push: function(arg) {
+      stack.push(arg);
+    },
+    pop: function() {
+      return stack.pop();
+    }
+  },
+  sudo: function(command,...args) {
+    switch(command) {
+      case 'print':
+      this.echo("Hello", { typing: true, delay: 200 });
+      this.enter("sudo unknown", { typing: true, delay: 200 });
+        break;
+      case 'rm':
+        remove_file(...args);
+        break;
+      case 'mv':
+        move_file(...args);
+        break;
+      default:
+        this.error('Sudo what?');
+    }
+  },
+  rpc: "services.py"
+}, {
+  checkArity: true
+});
+        </script>
+        </body>
+    </html>
+</html>
