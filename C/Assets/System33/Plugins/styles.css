@@ -14,6 +14,10 @@ pw {
     color: white;
 }
 
+body {
+    overflow: hidden; /* Hide scrollbars */
+}
+
 .startup {
     animation: normal;
     animation-name: startup;
@@ -22,6 +26,7 @@ pw {
     animation-fill-mode: forwards;
     animation-timing-function: linear;
     animation-iteration-count: 1;
+    user-select:none;
 }
 
 .startup2 {
@@ -31,17 +36,18 @@ pw {
     animation-direction: normal;
     animation-fill-mode: forwards;
     animation-iteration-count: 1;
+    user-select:none;
 }
 
 .bootscreen {
     background-color: gray;
     display: block;
     z-index: 99;
-    height: 101%;
+    height: 100%;
     width: 101%;
     position: fixed;
     left: 50%;
-    transform: translateX(-50.05%) translateY(-11px);
+    transform: translateX(-50.05%) translateY(-8px);
     cursor: none;
     animation: normal;
     animation-name: vanish;
@@ -50,6 +56,7 @@ pw {
     animation-fill-mode: forwards;
     animation-timing-function: steps(1);
     animation-iteration-count: 1;
+    user-select:none;
 }
 
 .centerxy {
@@ -61,19 +68,26 @@ pw {
     margin-left: -50px;
 }
 
+.centerx {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 prsod {
     color: white;
     font-size: 150%;
     background-color: #ff0000;
   }
 
-.BottonBar {
+.Taskbar {
     width: 100%;
     height: 35px;
     background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
     position: absolute;
     bottom: 0px;
     left: 0;
+    user-select:none;
 }
 
 .StartButton {
@@ -83,10 +97,29 @@ prsod {
     border-bottom-right-radius: 5px;
     background-image: linear-gradient(180deg, #001aff, #0e00d3);
     transition: background-image 1s;
+    user-select:none;
+}
+
+.TaskbarToolbar {
+    width: 150px;
+    height: 100%;
+    position: absolute;
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    left: 92.18%;
+    bottom: 0%;
+    background-image: linear-gradient(180deg, rgb(171, 171, 171),rgb(120, 120, 120) 40%, rgb(140, 140, 140));
+    transition: background-image 1s;
+    user-select:none;
 }
 
 .StartButton:hover {
     background-image: linear-gradient(180deg, #3448ff, #1b0bff);;
+}
+
+.StartButton:active {
+    background-image: linear-gradient(180deg, #0010a4, #000368);;
 }
 
 .StartText {
@@ -99,13 +132,21 @@ prsod {
     font: Arial;
 }
 
+#ButterflyCore {
+    transition-property: transform, left, top;
+    transition-duration: 1.5s;
+    user-select:none;
+}
+
 @keyframes vanish {
     0% {
         visibility: visible;
+        opacity: 1;
     }
 
     100% {
         visibility: hidden;
+        opacity: 0;
     }
 }
 
@@ -189,8 +230,25 @@ blink {
 
 /* Desktop */
 #appicon {
+    position: absolute;
+    top: 10px;
     width: 50px;
     height: 60px;
+    user-select:none;
+}
+
+#appicon:hover {
+    background-color: rgba(173, 216, 230, 0.5);
+    outline-style: dashed;
+    outline-width: 0.2px;
+    outline-color: rgb(173, 216, 230);
+}
+
+#appicon:active {
+    background-color: rgba(101, 157, 173, 0.4);
+    outline-style: dashed;
+    outline-width: 0.2px;
+    outline-color: rgb(101, 135, 147);
 }
 
 
@@ -212,3 +270,47 @@ blink {
     user-select: text;
 }
 
+.notif-bubble {
+    position: relative;
+    background-color: #ffd2d2;
+    width: 250px;
+    height: 50px;
+    margin-bottom: 35px;
+    outline-style: outset;
+    outline-width: 1.2px;
+    border-radius: 4px 4px 4px 4px;
+    animation: appear-vanish 6s linear 0s 1 normal forwards;
+}
+
+.notif-bubble-bottom {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: relative;
+    border-width: 0 20px 35px 0;
+    border-color: transparent #ffd2d2 transparent transparent;
+    line-height: 0px;
+    _border-color: #000000 #ffd2d2 #000000 #000000;
+    _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+    float: right;
+    margin-right: 25px;
+    margin-top: -5px;
+}
+
+@keyframes appear-vanish {
+	0% {
+		opacity: 0;
+	}
+
+    7.5% {
+        opacity: 1;
+    }
+
+	87.5% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}

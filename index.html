@@ -49,19 +49,40 @@
         <link href="https://unpkg.com/jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
         
         <!-- Scripts Link -->
-        <script src="C/Assets/System33/Plugins/script.js"></script>
         <script src="C/Assets/System33/System33.js"></script>
         <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
         <script type="text/javascript" src="C/Assets/System33/Plugins/loadingbar/loading-bar.min.js"></script>
+        <script type="text/javascript" src="C/Assets/System33/Plugins/notify.js"></script>
         <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.js"></script>
 
 
     </head>
     <Body class="background1" onload="
+timer();
 
+function timer(){
+ var currentTime = new Date()
+var hours = currentTime.getHours()
+var minutes = currentTime.getMinutes()
+var sec = currentTime.getSeconds()
+if (minutes < 10){
+    minutes = '0' + minutes
+}
+if (sec < 10){
+    sec = '0' + sec
+}
+var t_str = hours + ':' + minutes; //+ ':' + sec + ' '
+if(hours > 11){
+    t_str += ' ' + 'PM';
+} else {
+   t_str +=  ' ' + 'AM';
+}
+ document.getElementById('date-time').innerHTML = t_str;
+ setTimeout(timer,1000);
+}
 // var ix = 1;
 
 // function DragLoop() {
@@ -100,6 +121,7 @@
   <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
   <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
   <audio src="C/Assets/System33/Sounds/startup.wav" id="StartupSound">startup</audio>
+  <audio src="C/Assets/System33/Sounds/ballon.wav" id="BallonSound">ballon</audio>
 </div>
 
 <script>
@@ -111,11 +133,10 @@
     $( ".Clock" ).draggable();
     $( ".WebsiteBrowser" ).draggable();
   } );
-
   
 
   </script>
-<div class="bootscreen" id="bootscreen">
+<div class="bootscreen" id="bootscreen" style="user-select:none;">
   <img src="C/Assets/System33/Boot/WindowsRedkydudashLogo.png" alt="WinRedkyStartLogo" class="startup" height="45%" style="margin-left: 35%; margin-top: 12%;" draggable="false"> <br>
   <img src="C/Assets/System33/Images/loading.gif" alt="WinRedkyStartLogo" class="startup2" style="margin-left: 42%; margin-top: 0%;" draggable="false" width="15%">
   <!-- <div   data-type="fill"
@@ -150,28 +171,28 @@ function task(i) {
   </div>
   <div class="window-body">
       <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
-    <p>Welcome to Windows Redkydudash!</p>
-    <p>Note: the website is currectly in a Alpha.</p> 
-    ><blink>_</blink>
-    <button style="margin-left:35%;" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
+    <p style="margin-left: 55px;">Welcome to Windows Redkydudash!</p>
+    <p style="margin-left: 55px;" class="wtversion">Current Version: 1.0.9</p>  <!-- I wanted to do it automaticly, but it doesn't reconise it-->
+    <br>    <!-- ><blink>_</blink> -->
+    <button class="centerx" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
   </div>
 </div>
 
-<div class="Desktop">
+<div class="Desktop" style="user-select:none;">
 
-  <div id="appicon" ondblclick="OpenApp(1)" class="Creditstxt">
+  <div id="appicon" ondblclick="OpenApp(1)" class="Creditstxt" style="top: 10px;">
     <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
     <p style="color: white; font-size: 10px; padding-left: 10%; margin-top: 0%;">Credits.txt</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp(5)" class="ColorPicker">
+  <div id="appicon" ondblclick="OpenApp(5)" class="ColorPicker" style="top: 75px;">
     <img src="C/Assets/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
     <p style="color: white; font-size: 8px; padding-left: 22%; margin-top: 0%;">Color Picker</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp('clock')"  class="Clock">
+  <div id="appicon" ondblclick="OpenApp('clock')"  class="Clock" style="top: 140px;">
     <img src="C/Assets/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
     <p style="color: white; font-size: 10px; padding-left: 20%; margin-top: 0%;">Clock</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser">
+  <div id="appicon" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser" style="top: 205px;">
     <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; padding-left: 15%;" draggable="false">
     <p style="color: white; font-size: 9px; padding-left: 10%; margin-top: 0%;">Website Browser (W.I.P.)</p>
   </div>
@@ -179,15 +200,24 @@ function task(i) {
 
 
 
-<div class="BottonBar">
+<div class="Taskbar">
     <div class="StartButton" onclick="SystemFunction(10)">
     <img src="C/Assets/System33/Images/WinRedky.png" alt="WinRedkyStart" style="height: 27px; width:30px; margin-top: 2.5%;" draggable="false">
     <div style="display:inline-block;" class="StartText" unselectable="on" onselectstart="return false;" onmousedown="return false;">Start</div>
     </div>
     <div class="StartMenu" id="StartMenu" style="visibility: hidden;">
       <button style="margin-left: 0%;" onclick="Execute('CloseAllWindows')">Close All Windows</button> <br>
+      <button style="margin-left: 0%;" onclick="SystemFunction(2)">Run</button> <br>
       <button style="margin-left: 0%;" onclick="SystemFunction(11)">Reboot</button> <br>
+      
+    </div>
+    <div class="TaskbarToolbar">
+      <pw id='date-time' style="position: absolute; padding-left: 20%; padding-top: 5px; font-size: 150%;"></pw>
+    </div>
+    <div class="Notifications" style="z-index: 999; position: fixed; bottom: 35px; right: 27px;">
+      
     </div>
 </div>
-    </Body>
+  </Body>
+ </html>
 </html>
