@@ -7,6 +7,10 @@
     -webkit-font-smoothing: antialiased;
     position: absolute;
     z-index: 10;
+    overflow: hidden;
+}
+.window-body {
+    overflow: hidden;
 }
 .title-bar {
     font-family: "Trebuchet MS";
@@ -35,4 +39,5 @@
 .title-bar-text {
     padding-left: 3px;
     color: #ffffff;
+    user-select: none;
 }

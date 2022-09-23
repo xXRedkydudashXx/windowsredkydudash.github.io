@@ -37,6 +37,7 @@
         <meta name="keywords" content="HTML, CSS, JavaScript">
         <meta name="author" content="xXRedkydudashXx">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="google" content="notranslate" />
 
         <!-- Links -->
         <link rel="icon" type="image/x-icon" href="C/Assets/System33/Images/WinRedky.png">
@@ -44,18 +45,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/xp.css" />
         <link rel="stylesheet" href="C/Assets/System33/Plugins/windowtheme.css"/>
-        <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all">
+        <!-- <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all"> -->
         <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/loadingbar/loading-bar.min.css"/>
         <link href="https://unpkg.com/jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
         
         <!-- Scripts Link -->
         <script src="C/Assets/System33/System33.js"></script>
-        <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script>
+        <!-- <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script> -->
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-        <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script>
+        <!-- <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script> -->
         <script type="text/javascript" src="C/Assets/System33/Plugins/loadingbar/loading-bar.min.js"></script>
-        <script type="text/javascript" src="C/Assets/System33/Plugins/notify.js"></script>
         <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.js"></script>
 
 
@@ -117,22 +117,33 @@ if(hours > 11){
 // DragLoop();">
 
 <div alt="AudioLibrary">
-  <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialErrorSound">critialerror</audio>
-  <audio src="C/Assets/System33/Sounds/error.wav" id="ErrorSound">error</audio>
-  <audio src="C/Assets/System33/Sounds/exclamation.wav" id="ExclamationSound">exclamation</audio>
-  <audio src="C/Assets/System33/Sounds/startup.wav" id="StartupSound">startup</audio>
-  <audio src="C/Assets/System33/Sounds/ballon.wav" id="BallonSound">ballon</audio>
+  <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CritialError">critialerror</audio>
+  <audio src="C/Assets/System33/Sounds/error.wav" id="Error">error</audio>
+  <audio src="C/Assets/System33/Sounds/exclamation.wav" id="Exclamation">exclamation</audio>
+  <audio src="C/Assets/System33/Sounds/startup.wav" id="Startup">startup</audio>
+  <audio src="C/Assets/System33/Sounds/ballon.wav" id="Ballon">ballon</audio>
+  <audio src="C/Assets/System33/Sounds/reversedcritital.wav" id="ReversedCriticalError">reversedcrititalerror</audio>
 </div>
 
 <script>
-  $( function() {
-    $( "#draggable" ).draggable();
-    $( ".window" ).draggable();
-    $( ".Creditstxt" ).draggable();
-    $( ".ColorPicker" ).draggable();
-    $( ".Clock" ).draggable();
-    $( ".WebsiteBrowser" ).draggable();
-  } );
+
+  
+$(document).ready(function() {
+  $( ".window" ).draggable({
+    handle: ".title-bar",
+    containment: ".Desktop"
+    }); 
+    $( ".drag" ).resizable({
+      minWidth: 200,
+      minHeight: 50,
+      handles: "e, s, n, w, se, sw, ne, nw"
+    });
+    $( ".shortcut" ).draggable({
+    containment: ".Desktop",
+    zIndex: 10,
+    stack: ".shortcut"
+    });
+});
   
 
   </script>
@@ -162,7 +173,7 @@ function task(i) {
 
 
 
-<div class="window centerxy" style="width: 300px;" id="WelcomeMessage">
+<div class="window centerxy drag" style="width: 300px;" id="WelcomeMessage">
   <div class="title-bar">
     <div class="title-bar-text">Welcome!</div>
     <div class="title-bar-controls">
@@ -172,7 +183,7 @@ function task(i) {
   <div class="window-body">
       <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
     <p style="margin-left: 55px;">Welcome to Windows Redkydudash!</p>
-    <p style="margin-left: 55px;" class="wtversion">Current Version: Pre-Alpha 1.0.9</p>  <!-- I wanted to do it automaticly, but it doesn't reconise it-->
+    <p style="margin-left: 55px;" class="wtversion">Current Version: Pre-Alpha 1.1.0</p>
     <br>    <!-- ><blink>_</blink> -->
     <button class="centerx" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
   </div>
@@ -180,21 +191,25 @@ function task(i) {
 
 <div class="Desktop" style="user-select:none;">
 
-  <div id="appicon" ondblclick="OpenApp(1)" class="Creditstxt" style="top: 10px;">
-    <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-    <p style="color: white; font-size: 10px; padding-left: 10%; margin-top: 0%;">Credits.txt</p>
+  <div id="appicon" ondblclick="OpenApp(1)" class="Creditstxt shortcut" style="top: 10px;">
+    <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+    <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Credits.txt</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp(5)" class="ColorPicker" style="top: 75px;">
-    <img src="C/Assets/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-    <p style="color: white; font-size: 8px; padding-left: 22%; margin-top: 0%;">Color Picker</p>
+  <div id="appicon" ondblclick="OpenApp(5)" class="ColorPicker shortcut" style="top: 75px;">
+    <img src="C/Assets/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+    <p style="color: white; font-size: 8px; margin-top: 0%; text-align: center;">Color Picker</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp('clock')"  class="Clock" style="top: 140px;">
-    <img src="C/Assets/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; padding-left: 15%;" draggable="false">
-    <p style="color: white; font-size: 10px; padding-left: 20%; margin-top: 0%;">Clock</p>
+  <div id="appicon" ondblclick="OpenApp('clock')"  class="Clock shortcut" style="top: 140px;">
+    <img src="C/Assets/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+    <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Clock</p>
   </div>
-  <div id="appicon" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser" style="top: 205px;">
-    <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; padding-left: 15%;" draggable="false">
-    <p style="color: white; font-size: 9px; padding-left: 10%; margin-top: 0%;">Website Browser (W.I.P.)</p>
+  <div id="appicon" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser shortcut" style="top: 205px;">
+    <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+    <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Website Browser (W.I.P.)</p>
+  </div>
+  <div id="appicon" ondblclick="OpenApp('terminal')" class="Therminal shortcut" style="top: 270px;">
+    <img src="C/Assets/System33/Icons/Apps/Terminal.svg" alt="Terminal" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+    <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Terminal (W.I.P.)</p>
   </div>
 </div>
 
@@ -214,7 +229,7 @@ function task(i) {
     <div class="TaskbarToolbar">
       <pw id='date-time' style="position: absolute; padding-left: 20%; padding-top: 5px; font-size: 150%;"></pw>
     </div>
-    <div class="Notifications" style="z-index: 999; position: fixed; bottom: 35px; right: 27px;">
+    <div class="Notifications" style="z-index: 999; position: fixed; bottom: 70px; right: 27px;">
       
     </div>
 </div>

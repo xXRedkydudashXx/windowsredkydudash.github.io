@@ -1,7 +1,7 @@
 console.log("Hello World!")
 // import settings from './example.json' assert {type: 'json'};
 // console.log(settings);
-CurrVersion = "Pre-Alpha 1.0.9"
+CurrVersion = "Pre-Alpha 1.1.0"
 
 // Functions needed
 function sleep(ms) {    // Remember, use it only in async functions
@@ -74,12 +74,21 @@ function AddWhiteText(text, tclass, tid) {
     p.style.color = "white"
     return p
 }
+
+/* Once of the most important functions */
+function NullCheck(value) {
+    return value === undefined || value === null;
+}
+
+function NoCheck(value) {
+    return value === undefined || value === null || value === false;
+}
 /**
  * Toggle fullscreen function who work with webkit and firefox.
  * @function toggleFullscreen
  * @param {Object} event
  */
- function $fullscreen(event) {
+ function $Fullscreen(event) {
     var element = document.body;
   
       if (event instanceof HTMLElement) {
@@ -114,19 +123,24 @@ function AddWhiteText(text, tclass, tid) {
 }
 // End Functions needed
 
+function $PlaySound(sound) {
+    var sound = document.getElementById(sound).cloneNode(true)
+    sound.play();
+}
 
-setTimeout(function(){
-    var element = document.getElementById("bootscreen")
-    if(typeof(element) != 'undefined' && element != null){
-        var sound = document.getElementById("StartupSound").cloneNode(true)
-        sound.play();
-    }
+
+setTimeout(async function(){
+    await sleep(5000)
+    document.getElementById("bootscreen").remove()
+    $PlaySound("Startup")
     // Little beta/alpha info:
     setTimeout(() => {
         $Notify("Information","The website is still in alpha/beta stat") 
     }, 5000);
-}, 5000)
-setInterval(function () {$( ".window" ).draggable();}, 1000);
+}, 1)
+setInterval(function () {    $( ".window" ).draggable({handle: ".title-bar", containment: ".Desktop"}); }, 10000);
+setInterval(()=>{$(".drag").resizable({minWidth:165,minHeight:50,handles:"e, s, n, w, se, sw, ne, nw"})},1e10);
+setInterval(function () {    $( ".shortcut" ).draggable({   containment: ".Desktop"}); }, 10000);
 
 async function SystemFunction(Identifiant) {
 
@@ -135,7 +149,7 @@ async function SystemFunction(Identifiant) {
     }
 
     if (Identifiant == 2) {
-        var Window = $MakeWindow("250px", "150px", "run", "Run", true, false, false, true, "-47.5%", "5%")
+        var Window = $MakeWindow("250px", "150px", "run", "Run", true, false, false, true, true, "-47.5%", "5%")
         var WindowBody = Window.querySelector(".window-body")
         var WindowHelp = Window.querySelector('[aria-label="Help"]')
         WindowHelp.setAttribute("enabled", "true")
@@ -230,7 +244,18 @@ async function wrdebug(command, value) {
 
 async function OpenApp(App) {
     if (App === 1) {
-        CreateIFrameWindow("400px", "300px", "Notepad", "CreditNotepad", true, false, false, false, "C/Assets/Programs/credits.html", false, false)
+        const Window = $MakeWindow("400px", "300px", "Notepad", "CreditNotepad", true, true, true, false, true, 0, 0) //-- After
+        const WindowBody = Window.querySelector(".window-body")
+        Window.style.backgroundColor = "white"
+        const iframe = document.createElement("iframe")
+        iframe.style.width = "380px"
+        iframe.style.height = "255px"
+        iframe.src = "C/Assets/Programs/credits.html"
+        iframe.style.border = "none"
+        iframe.innerHTML = "Browser not compatible." // Used when browser doesn't own iframe
+        WindowBody.appendChild(iframe)
+        AddElementToBody(Window)
+        //CreateIFrameWindow("400px", "300px", "Notepad", "CreditNotepad", true, false, false, false, "C/Assets/Programs/credits.html", false, false) //-- Before
     }
     if (App === 5) {
             const RWindow = document.createElement("div") // Window Tab
@@ -273,72 +298,49 @@ async function OpenApp(App) {
             CreateIFrameWindow("300px", "300px", "Clock", "ClockWindow", true, false, false, false, "C/Assets/Programs/clock.html", false, false)
         }
     }
+    if (App == 'terminal') {
+        const Termapp = $MakeWindow("350px", "275px", "terminalwindow", "Command Prompt", true, true, true, false, true)
+        const Termbody = Termapp.getElementsByClassName("window-body")[0]
+        Termapp.style.backgroundColor = "black"
+        AddElementToBody(Termapp)
+    }
     if (App === 'websitebrowser') {
-
-            const RWindow = document.createElement("div") // Window Tab
-            RWindow.className = 'window'
-            RWindow.style.width = "1025px"
-            RWindow.style.height = "600px"
-            RWindow.id = "WebsiteBrowser"
-            RWindow.style.position = "absolute"         
-            const RWindowTitleBar = document.createElement("div") // Window Title
-            RWindowTitleBar.className = "title-bar"
-            RWindow.appendChild(RWindowTitleBar)
-            const RWindowTitleText = document.createElement("div")
-            RWindowTitleText.insertAdjacentText("afterbegin", "Website Browser")
-            RWindowTitleText.className = "title-bar-text"
-            RWindowTitleBar.appendChild(RWindowTitleText)
-            const RWindowTitleControls = document.createElement("div")
-            RWindowTitleControls.className = "title-bar-controls"
-            RWindowTitleBar.appendChild(RWindowTitleControls)
-                // const RWindowHelpButton = document.createElement("button")
-                // RWindowHelpButton.ariaLabel = "Help"
-                // RWindowTitleControls.appendChild(RWindowHelpButton)
-                // const RWindowMinimizeButton = document.createElement("button")
-                // RWindowMinimizeButton.ariaLabel = "Minimize"
-                // RWindowTitleControls.appendChild(RWindowMinimizeButton)
-                // const RWindowMaximizeButton = document.createElement("button")
-                // RWindowMaximizeButton.ariaLabel = "Maximize"
-                // RWindowTitleControls.appendChild(RWindowMaximizeButton)
-                const RWindowCloseButton = document.createElement("button")
-                RWindowCloseButton.ariaLabel = "Close"
-                RWindowTitleControls.appendChild(RWindowCloseButton)
-                RWindowCloseButton.onclick = function(){RWindow.remove()}
-            const RWindowBody = document.createElement("div")
-            RWindowBody.className = "window-body"
-            RWindowBody.style.height = "88%"
-            RWindow.appendChild(RWindowBody)
-            const RWindowBodyIFrame = document.createElement("iframe")
-            //dragElement(RWindow)
-            document.body.appendChild(RWindow)
-            RWindowBodyIFrame.src = "https://www.gigablast.com" // Can't do better
-            RWindowBodyIFrame.height = "100%";
-            RWindowBodyIFrame.width = "1000";
-            RWindowBodyIFrame.style.overflow = "auto";
-            const RWindowBodyIFrameSearchBar = document.createElement("input");
-            RWindowBodyIFrameSearchBar.setAttribute("type", "text");
-            RWindowBodyIFrameSearchBar.size = 182.5;
-            RWindowBody.appendChild(RWindowBodyIFrameSearchBar);
-            const RWindowBodyIFrameSearchBarButton = document.createElement("button");
-            RWindowBodyIFrameSearchBarButton.textContent = "Search";
-            RWindowBodyIFrameSearchBar.type = "search"
-            RWindowBody.appendChild(RWindowBodyIFrameSearchBarButton);
-            RWindowBody.appendChild(RWindowBodyIFrame);
-            RWindowBodyIFrameSearchBarButton.onclick = function(){
-            var input = RWindowBodyIFrameSearchBar.value
-            
-            
+            const WBrowser = $MakeWindow("1025px", "600px", "WebsiteBrowser", "Website Browser", true, true, true, false, true)
+            WBrowser.style.left = "12.5%"
+            WBrowser.style.top = "50%"
+            const BrowserBody = WBrowser.querySelector(".window-body")
+            BrowserBody.style.height = "94%"
+            const WBrowserIFrame = document.createElement("iframe")
+            WBrowserIFrame.src = "https://www.gigablast.com" // Can't do better
+            WBrowserIFrame.height = "100%";
+            WBrowserIFrame.width = "100%";
+            WBrowserIFrame.style.overflow = "auto";
+            const WBrowserSearchBar = document.createElement("input");
+            WBrowserSearchBar.setAttribute("type", "text");
+            WBrowserSearchBar.size = 182.5;
+            BrowserBody.appendChild(WBrowserSearchBar);
+            const WBrowserSearchButton = document.createElement("button");
+            WBrowserSearchButton.textContent = "Search";
+            WBrowserIFrame.type = "search"
+            BrowserBody.appendChild(WBrowserSearchButton);
+            BrowserBody.appendChild(WBrowserIFrame);
+            AddElementToBody(WBrowser)
+            WBrowserSearchButton.onclick = function(){
+            var input = WBrowserSearchBar.value
+            console.log(input)
             if(input.match(/\bhttp(.)*/)) {
-                RWindowBodyIFrame.src = input;
+                WBrowserIFrame.src = input;
             } else {
                 input = "http://" + input;
-                RWindowBodyIFrame.src = input;
+                WBrowserIFrame.src = input;
             }   
+            
+            
         }
     }
     if (App === 'butterflymenu') {
         if (document.getElementById("ButterflyMenu") === null) {
-            var Window = $MakeWindow("250px", "100px", "ButterflyMenu", "Butterfly", true, false, false, true)
+            var Window = $MakeWindow("250px", "100px", "ButterflyMenu", "Butterfly", true, false, false, true, true)
             var WindowBody = Window.querySelector(".window-body")
             var WindowHelp = Window.querySelector('[aria-label="Help"]')
             WindowHelp.setAttribute("enabled", "true")
@@ -426,7 +428,9 @@ async function OpenApp(App) {
     }
     if (App === "Prank1") {
         for (let i = 0; i < 12; i++) {
-            setTimeout(function(){CreateWindow("250px", "PrankError", "Error", true, false, false, false, "This is a spam error", "error", (Math.round(Math.random()) * 2.5 - 2)*(Math.random()*300) +"px", (Math.round(Math.random()) * 2.1 - 1)*(Math.random()*300) +"px", "Close", 1, null, 0, null, 0, true)},i*100*i/10)
+            setTimeout(function(){AddElementToBody($MakeWindow("250px", null, null, "Error", true, false, false, false, true, RandomInt(10,90)+"%", RandomInt(10,90)))},i*100*i/10) // After
+            // CreateWindow("250px", "PrankError", "Error", true, false, false, false, "This is a spam error", "error", (Math.round(Math.random()) * 2.5 - 2)*(Math.random()*300) +"px", (Math.round(Math.random()) * 2.1 - 1)*(Math.random()*300) +"px", "Close", 1, null, 0, null, 0, true) // Before
+            
         }
     }
 
@@ -452,7 +456,7 @@ async function $TaskKill(Program){   // Remove every program (basically element)
 }       // Be carefull this can count to the desktop icons and start menu too!
 
 // Create a window
-function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, BodyText, MessageIcon, MarginLeft, MarginTop, Button1, Button1Function, Button2, Button2Function, Button3, Button3Function, PlaySound) {
+function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, BodyText, MessageIcon, MarginLeft, MarginTop, Button1, Button1Function, Button2, Button2Function, Button3, Button3Function, $PlaySound) {
     const RWindow = document.createElement("div") // Window Tab
     RWindow.className = 'window centerxy'
     RWindow.style.width = Width
@@ -589,7 +593,7 @@ function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMa
     }
     //dragElement(RWindow)
     document.body.appendChild(RWindow)
-    if (PlaySound === true) {
+    if ($PlaySound === true) {
         if (MessageIcon == "error") {
             var sound = document.getElementById("CritialErrorSound").cloneNode(true)
             sound.play();
@@ -667,7 +671,7 @@ function CreateIFrameWindow(Width, Height, Title, Id, HasCloseButton, HasMinimiz
 
 // Make instant Message Box (with sounds & icons)
 function $MessageBox(Id, Text) {
-    var Window = $MakeWindow("250px", "100px", "$MessageBox", "$MessageBox", true, false, false, false ,"-5%", '-6%')
+    var Window = $MakeWindow("250px", "100px", "$MessageBox", "$MessageBox", true, false, false, false, false,"-5%", '-6%')
     Window.style.removeProperty("height") // Make the thing weird if to many text
     if (Id === 1) {
         Window.querySelector(".title-bar-text").innerHTML = "Message"
@@ -718,28 +722,29 @@ function $MessageBox(Id, Text) {
     Window.querySelector(".window-body").appendChild(WindowButton)
     AddElementToBody(Window)
     if (Id == 1) {
-       var sound = document.getElementById("ExclamationSound").cloneNode(true)
-       sound.play();
+       $PlaySound("Exclamation")
     } else if (Id == 2) {
-       var sound = document.getElementById("ExclamationSound").cloneNode(true)
-       sound.play();
+        $PlaySound("Exclamation")
     } else if (Id == 3) {
-        var sound = document.getElementById("CritialErrorSound").cloneNode(true)
+        $PlaySound("CriticalError")
         sound.play();
     } else if (Id == 4) {
-       var sound = document.getElementById("ErrorSound").cloneNode(true)
-       sound.play();
+        $PlaySound("Error")
     }
+    //return Window // Later 0.0
 }
 
 // Make Window (Used for advanced windows making)
-function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, MarginLeft, MarginTop) {
+function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, Draggable, MarginLeft, MarginTop) {
     const RWindow = document.createElement("div") // Window Tab
     RWindow.className = 'window centerxy'
     RWindow.style.width = Width
     RWindow.style.height = Height
     RWindow.id = Id
     RWindow.style.position = "absolute"         
+    if (Draggable !== false || Draggable !== null) {
+        RWindow.className = RWindow.className + " drag"           
+    }
     if (MarginTop !== false || MarginTop !== null) {
         RWindow.style.marginTop=MarginTop;            
     }
@@ -780,49 +785,118 @@ function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton
     const RWindowBody = document.createElement("div")
     RWindowBody.className = "window-body"
     RWindow.appendChild(RWindowBody)
-    //dragElement(RWindow)
+    $( RWindow ).draggable({
+        handle: ".title-bar",
+        containment: ".Desktop"
+        }); 
+        $( RWindow ).resizable({
+          minWidth: 200,
+          minHeight: 50,
+          zIndex: 5,
+          handles: "e, s, n, w, se, sw, ne, nw"
+        });
+
+    //AddElementToBody(Window) // Later 0.0
     return RWindow
 }
 
 // Notify (in a ballon of course)
 function $Notify(Title, Text) {
-    const ballon = document.createElement("div") // ballon tip
+    const ballon = document.createElement("div") // Ballon tip
     ballon.className = "notif-bubble"
-    const TitleT = document.createElement("p") // Title
-    TitleT.innerHTML = Title
-    TitleT.style.marginLeft = "10px"
-    TitleT.style.padding  = "5px"
-    TitleT.style.fontWeight = "bold"
-    ballon.appendChild(TitleT)
-    const BodyText = document.createElement("p") // Title
-    BodyText.innerHTML = Text
-    BodyText.style.marginLeft = "15px"
-    BodyText.style.marginTop = "-10px"
-    ballon.appendChild(BodyText)
-    const ballonT = document.createElement("div") // ballon tip
+    if (!NullCheck(Title)) {
+        const TitleT = document.createElement("p") // Title
+        TitleT.innerHTML = Title.toString()
+        TitleT.style.marginLeft = "10px"
+        TitleT.style.padding  = "5px 0px 1px 0px"
+        TitleT.style.fontWeight = "bold"
+        ballon.appendChild(TitleT)
+    }
+    const ballonX = document.createElement("img") // Close button
+    ballonX.src = "C/Assets/System33/Icons/Others/ballonx.jpg"
+    ballonX.className = "notif-bubble-close"
+    ballonX.style.position = "absolute"
+    ballonX.style.top = "5px"
+    ballonX.style.right = "5px"
+    ballon.appendChild(ballonX)
+    const ballonM = document.createElement("p") // Inner Message
+    ballonM.innerHTML = Text.toString()
+    ballonM.style.padding  = "0px 0px 10px 0px"
+    ballonM.style.marginLeft = "15px"
+    ballonM.style.marginTop = "-10px"
+    ballon.appendChild(ballonM)
+    const ballonT = document.createElement("div") // Ballon tip bottom
     ballonT.className = "notif-bubble-bottom"
     ballon.appendChild(ballonT)
+    const ballonTO = document.createElement("div") // Ballon tip bottom outline
+    ballonTO.className = "notif-bubble-bottom-outline"
+    ballonT.appendChild(ballonTO)
     document.body.querySelector(".Notifications").appendChild(ballon)
-    var sound = document.getElementById("BallonSound").cloneNode(true)
-    sound.play();
-    ballon.ondblclick = async function(){ // Later remplaced by a close button
+    $PlaySound("Ballon")
+    ballonX.onclick = async function(){
         ballon.style.removeProperty("animation")
-        ballon.animate([
-            // keyframes
-            { opacity: '1' },
-            { opacity: '0' }
-          ], {
-            // timing options
-            duration: 750,
-            iterations: 1
-          });
-        await sleep(750)
         ballon.remove()
     }
-    setTimeout(function(){ballon.remove()}, 6000)
+    if (!NullCheck(Title) && !NullCheck(Text)) {
+        lengthDelay = (((Title.toString().length)+(Text.toString().length))*10)
+    } else {
+        lengthDelay = 0
+    }
+    setTimeout(async function(){
+        ballon.animate([
+        // keyframes
+        { opacity: '1' },
+        { opacity: '0' }
+      ], {
+        // timing options
+        duration: 750,
+        iterations: 1
+      });
+    await sleep(750)
+    ballon.remove()}, 4500+lengthDelay)
 }
 
-// Draggable Elements
+// Create shortcut
+function $Shortcut(Name, Image, Left, Top, Function) {
+    const shortcut = document.createElement("div")
+    const name = Name
+    shortcut.id = "appicon"
+    shortcut.className = name.replace(/[^a-zA-Z ]/g,"")+ " shortcut"
+    if (Left !== false || Left !== null) {
+        shortcut.style.left = Left 
+    } else {
+        shortcut.style.left = "150px"
+    }
+    if (Top !== false || Top !== null) {
+        shortcut.style.top = Top 
+    } else {
+        shortcut.style.top = "150px"
+    }
+    const shortcuticon = document.createElement("img")
+    shortcuticon.src = Image
+    shortcuticon.alt = Name
+    shortcuticon.style.height = "35px"
+    shortcuticon.style.width = "35px"
+    shortcuticon.style.marginLeft = "auto"
+    shortcuticon.style.marginRight = "auto"
+    shortcuticon.style.display = "block"
+    shortcut.appendChild(shortcuticon)
+    const shortcutname = document.createElement("p")
+    shortcutname.style.color = "white"
+    shortcutname.style.fontSize = "9px"
+    shortcutname.style.paddingTop = "0%"
+    shortcutname.style.textAlign = "center"
+    shortcutname.innerHTML = name.replace('*."/\[]:;|,',"")
+    shortcut.appendChild(shortcutname)
+    
+    // Hardest part
+    if (NoCheck(Function)) {
+        Function(shortcut)
+    }
+    document.querySelector(".Desktop").appendChild(shortcut)
+    return shortcut
+}
+
 
 // Finish
 

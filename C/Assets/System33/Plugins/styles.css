@@ -14,8 +14,16 @@ pw {
     color: white;
 }
 
+image {
+    filter: blur(0px);
+}
+
 body {
     overflow: hidden; /* Hide scrollbars */
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom:auto;
 }
 
 .startup {
@@ -43,19 +51,19 @@ body {
     background-color: gray;
     display: block;
     z-index: 99;
-    height: 100%;
-    width: 101%;
-    position: fixed;
+    height: 110%;
+    width: 100.5%;
+    position: absolute;
     left: 50%;
     transform: translateX(-50.05%) translateY(-8px);
     cursor: none;
     animation: normal;
-    animation-name: vanish;
+    /* animation-name: vanish;
     animation-duration: 5s;
     animation-direction: normal;
     animation-fill-mode: forwards;
     animation-timing-function: steps(1);
-    animation-iteration-count: 1;
+    animation-iteration-count: 1; */
     user-select:none;
 }
 
@@ -235,6 +243,7 @@ blink {
     width: 50px;
     height: 60px;
     user-select:none;
+    left: 10px
 }
 
 #appicon:hover {
@@ -242,6 +251,13 @@ blink {
     outline-style: dashed;
     outline-width: 0.2px;
     outline-color: rgb(173, 216, 230);
+}
+
+#appicon:focus {
+    background-color: rgba(101, 157, 173, 0.4);
+    outline-style: dashed;
+    outline-width: 0.2px;
+    outline-color: rgb(101, 135, 147);
 }
 
 #appicon:active {
@@ -253,6 +269,12 @@ blink {
 
 
 /* Others */
+
+.Desktop {
+    position: absolute;
+    width: 100%;
+    height: 96.7%;
+}
 
 .selectDisable {
     -webkit-user-select: none;
@@ -274,28 +296,51 @@ blink {
     position: relative;
     background-color: #ffd2d2;
     width: 250px;
-    height: 50px;
-    margin-bottom: 35px;
+    height:fit-content;
+    margin-bottom: -12px;
     outline-style: outset;
     outline-width: 1.2px;
     border-radius: 4px 4px 4px 4px;
-    animation: appear-vanish 6s linear 0s 1 normal forwards;
+    box-shadow: 2px 2px 5px;
+    animation: appear 750ms linear 0s 1 normal forwards;
+}
+
+.notif-bubble-close:focus {
+    filter: brightness(0);
 }
 
 .notif-bubble-bottom {
     width: 0;
     height: 0;
     border-style: solid;
+    position: absolute;
+    right: 0;
+    border-width: 0 20px 18px 0;
+    border-color: transparent #000000 transparent transparent;
+    line-height: 0px;
+    _border-color: #000000 #000000 #000000 #000000;
+    _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+    display:inline-block;
+    margin-right: 25px;
+    margin-top: -4.8%;
+}
+
+.notif-bubble-bottom-outline {
+    width: 0;
+    height: 0;
+    border-style: solid;
     position: relative;
-    border-width: 0 20px 35px 0;
+    border-width: 0 18px 15px 0;
     border-color: transparent #ffd2d2 transparent transparent;
     line-height: 0px;
+    transform: translate(6%);
     _border-color: #000000 #ffd2d2 #000000 #000000;
     _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
-    float: right;
+    display:inline-block;
     margin-right: 25px;
-    margin-top: -5px;
+    margin-top: -5%;
 }
+
 
 @keyframes appear-vanish {
 	0% {
@@ -314,3 +359,93 @@ blink {
 		opacity: 0;
 	}
 }
+
+@keyframes appear {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* handle on the bottom */
+.ui-resizable-s {
+    height: 7.5px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+/* handle on the top */
+.ui-resizable-n {
+    height: 5px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+/* handle on the right */
+.ui-resizable-e {
+    height: 100%;
+    width: 7.5px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/* handle on the left */
+.ui-resizable-w {
+    height: 100%;
+    width: 7.5px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+/* handle icon (bottom-right) */
+.ui-resizable-se {
+    height: 7.5px;
+    width: 7.5px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+/* handle icon (bottom-left) */
+.ui-resizable-sw {
+    height: 7.5px;
+    width: 7.5px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+/* handle icon (top-right) */
+.ui-resizable-ne {
+    height: 7.5px;
+    width: 7.5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* handle icon (top-left) */
+.ui-resizable-nw {
+    height: 7.5px;
+    width: 7.5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Specials */
+
+/* Spin */
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+.spin {
+    animation: spin 1.2s infinite linear;
+}
+  
