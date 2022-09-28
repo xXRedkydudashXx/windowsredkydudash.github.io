@@ -1,7 +1,7 @@
 console.log("Hello World!")
 // import settings from './example.json' assert {type: 'json'};
 // console.log(settings);
-CurrVersion = "Pre-Alpha 1.1.0"
+CurrVersion = "Pre-Alpha 1.1.1"
 
 // Functions needed
 function sleep(ms) {    // Remember, use it only in async functions
@@ -121,6 +121,44 @@ function NoCheck(value) {
         });
     });
 }
+// function $FC(callback) {
+//     try{ 
+//         callback()
+//       } catch(error){ 
+//         $MessageBox(3, error) 
+//       } 
+// }        // Currently in alpha
+async function $MoveTo(params){
+    var pleft = params.left
+    var ptop = params.top
+    if (params.iterations) {
+        var piterations = params.iterations
+    } else {
+        var piterations = 1
+    }
+    if (params.easing) {
+        var peasing = params.easing
+    } else {
+        var peasing = "linear"
+    }
+    if (params.element !== undefined && params.element !== null) {
+        const Element = params.element
+        Element.animate([
+            // keyframes
+            { top:ptop, left:pleft }
+          ], {
+            // timing options
+            duration: params.duration,
+            iterations: piterations,
+            easing: peasing
+          });
+          setTimeout(() => {
+            Element.style.top = ptop
+            Element.style.left = pleft
+          }, params.duration);
+          
+    }
+}
 // End Functions needed
 
 function $PlaySound(sound) {
@@ -131,8 +169,10 @@ function $PlaySound(sound) {
 
 setTimeout(async function(){
     await sleep(5000)
-    document.getElementById("bootscreen").remove()
-    $PlaySound("Startup")
+    if (document.getElementById("bootscreen")) {
+        document.getElementById("bootscreen").style.visibility = "hidden" // Never remove it for some reasons
+        $PlaySound("Startup")
+    }   
     // Little beta/alpha info:
     setTimeout(() => {
         $Notify("Information","The website is still in alpha/beta stat") 
@@ -142,6 +182,7 @@ setInterval(function () {    $( ".window" ).draggable({handle: ".title-bar", con
 setInterval(()=>{$(".drag").resizable({minWidth:165,minHeight:50,handles:"e, s, n, w, se, sw, ne, nw"})},1e10);
 setInterval(function () {    $( ".shortcut" ).draggable({   containment: ".Desktop"}); }, 10000);
 
+
 async function SystemFunction(Identifiant) {
 
     if (Identifiant == 1) {
@@ -149,7 +190,7 @@ async function SystemFunction(Identifiant) {
     }
 
     if (Identifiant == 2) {
-        var Window = $MakeWindow("250px", "150px", "run", "Run", true, false, false, true, true, "-47.5%", "5%")
+        var Window = $MakeWindow("250px", "150px", "run", "Run", true, false, false, true, true, false, "-47.5%", "5%")
         var WindowBody = Window.querySelector(".window-body")
         var WindowHelp = Window.querySelector('[aria-label="Help"]')
         WindowHelp.setAttribute("enabled", "true")
@@ -242,8 +283,27 @@ async function wrdebug(command, value) {
 //     }
 //   });
 
+
+function $Reboot() {
+    document.location.reload(true)
+}
+
+function $Shutdown() {
+    document.querySelector(".Desktop").style.visibility = "hidden";
+    document.querySelector(".Taskbar").style.visibility = "hidden";
+    document.querySelector(".StartMenu").style.visibility = "hidden";
+    const windows = document.querySelectorAll('.window').forEach(window => {
+        window.remove()
+    })
+    //
+    $PlaySound("Shutdown")
+    setTimeout(() => {
+        document.querySelector(".bootscreen").style.visibility = "visible"
+    }, 4150);
+}
+
 async function OpenApp(App) {
-    if (App === 1) {
+    if (App == 1) {
         const Window = $MakeWindow("400px", "300px", "Notepad", "CreditNotepad", true, true, true, false, true, 0, 0) //-- After
         const WindowBody = Window.querySelector(".window-body")
         Window.style.backgroundColor = "white"
@@ -257,7 +317,7 @@ async function OpenApp(App) {
         AddElementToBody(Window)
         //CreateIFrameWindow("400px", "300px", "Notepad", "CreditNotepad", true, false, false, false, "C/Assets/Programs/credits.html", false, false) //-- Before
     }
-    if (App === 5) {
+    if (App == 5) {
             const RWindow = document.createElement("div") // Window Tab
     RWindow.className = 'window'
     RWindow.style.width = "200px"
@@ -293,7 +353,7 @@ async function OpenApp(App) {
     RWindowBodyIFrame.height = "100%"
     RWindowBodyIFrame.width = "100%"
     }
-    if (App === 'clock') {
+    if (App == 'clock') {
         if (document.getElementById("Clock") === null) {
             CreateIFrameWindow("300px", "300px", "Clock", "ClockWindow", true, false, false, false, "C/Assets/Programs/clock.html", false, false)
         }
@@ -304,10 +364,10 @@ async function OpenApp(App) {
         Termapp.style.backgroundColor = "black"
         AddElementToBody(Termapp)
     }
-    if (App === 'websitebrowser') {
+    if (App == 'websitebrowser') {
             const WBrowser = $MakeWindow("1025px", "600px", "WebsiteBrowser", "Website Browser", true, true, true, false, true)
-            WBrowser.style.left = "12.5%"
-            WBrowser.style.top = "50%"
+            WBrowser.style.left = "25%"
+            WBrowser.style.top = "25%"
             const BrowserBody = WBrowser.querySelector(".window-body")
             BrowserBody.style.height = "94%"
             const WBrowserIFrame = document.createElement("iframe")
@@ -338,7 +398,7 @@ async function OpenApp(App) {
             
         }
     }
-    if (App === 'butterflymenu') {
+    if (App == 'butterflymenu') {
         if (document.getElementById("ButterflyMenu") === null) {
             var Window = $MakeWindow("250px", "100px", "ButterflyMenu", "Butterfly", true, false, false, true, true)
             var WindowBody = Window.querySelector(".window-body")
@@ -380,14 +440,24 @@ async function OpenApp(App) {
             AddElementToBody(Window)
         }
     }
-    if (App === 'butterfly') {
+    if (App == 'butterfly') {
+        function MoveButterfly(Left, Top) {
+            $MoveTo({
+                element: butterflydiv,
+                top: Left,
+                left: Top,
+                duration: RandomInt(1500,2500),
+                easing: "ease-in-out"
+            })// After
+        }
+
         const butterflydiv = document.createElement("div")
         const butterfly = document.createElement("object")
         butterfly.type = "image/svg+xml"
         butterfly.data = "C/Assets/System33/Images/Vectors/ABF.svg"
         butterfly.className = "Butterfly"
         butterflydiv.id = "ButterflyCore"
-        butterfly.id = "Butterfly"
+        butterfly.id = "Butterflyi"
         butterfly.setAttribute("name", "Butterfly")
         butterfly.setAttribute("flying", "true")
         butterfly.style.transform = "scale(0.4)"
@@ -405,7 +475,7 @@ async function OpenApp(App) {
         butterflydiv.style.top = '50%'
         butterflydiv.className = "butterfly"
         await sleep(2500)
-        var repeatnum = RandomInt(10,60)
+        var repeatnum = RandomInt(1000,10000)/RandomInt(100,1000)
         var done = 0
         setIntervalX(function () {
             //console.log(done)
@@ -413,7 +483,8 @@ async function OpenApp(App) {
                 butterfly.setAttribute("flying", "false")
             } else {
                 done = done + 1
-                butterflydiv.style.transform = 'translate('+RandomInt(-999, 999)+'%,'+RandomInt(-500, 500)+'%)';
+                // butterflydiv.style.transform = 'translate('+RandomInt(-999, 999)+'%,'+RandomInt(-500, 500)+'%)'; // Before
+                MoveButterfly(RandomInt(-1,100)+"%", RandomInt(-1,100)+"%")
             }
         }, RandomInt(20,100)*20, repeatnum);
         do {
@@ -426,7 +497,7 @@ async function OpenApp(App) {
         await sleep(2000)
         document.body.removeChild(butterflydiv)
     }
-    if (App === "Prank1") {
+    if (App == "Prank1") {
         for (let i = 0; i < 12; i++) {
             setTimeout(function(){AddElementToBody($MakeWindow("250px", null, null, "Error", true, false, false, false, true, RandomInt(10,90)+"%", RandomInt(10,90)))},i*100*i/10) // After
             // CreateWindow("250px", "PrankError", "Error", true, false, false, false, "This is a spam error", "error", (Math.round(Math.random()) * 2.5 - 2)*(Math.random()*300) +"px", (Math.round(Math.random()) * 2.1 - 1)*(Math.random()*300) +"px", "Close", 1, null, 0, null, 0, true) // Before
@@ -595,16 +666,16 @@ function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMa
     document.body.appendChild(RWindow)
     if ($PlaySound === true) {
         if (MessageIcon == "error") {
-            var sound = document.getElementById("CritialErrorSound").cloneNode(true)
+            var sound = document.getElementById("CriticalError").cloneNode(true)
             sound.play();
         } else if (MessageIcon == "information") {
-            var sound = document.getElementById("ExclamationSound").cloneNode(true)
+            var sound = document.getElementById("Exclamation").cloneNode(true)
             sound.play();
         } else if (MessageIcon == "question") {
-            var sound = document.getElementById("ExclamationSound").cloneNode(true)
+            var sound = document.getElementById("Exclamation").cloneNode(true)
             sound.play();
         } else if (MessageIcon == "warning") {
-            var sound = document.getElementById("ErrorSound").cloneNode(true)
+            var sound = document.getElementById("Error").cloneNode(true)
             sound.play();
         }
     }
@@ -671,7 +742,7 @@ function CreateIFrameWindow(Width, Height, Title, Id, HasCloseButton, HasMinimiz
 
 // Make instant Message Box (with sounds & icons)
 function $MessageBox(Id, Text) {
-    var Window = $MakeWindow("250px", "100px", "$MessageBox", "$MessageBox", true, false, false, false, false,"-5%", '-6%')
+    var Window = $MakeWindow("250px", "100px", "$MessageBox", "$MessageBox", true, false, false, false, true, false,"-5%", '-6%')
     Window.style.removeProperty("height") // Make the thing weird if to many text
     if (Id === 1) {
         Window.querySelector(".title-bar-text").innerHTML = "Message"
@@ -727,23 +798,25 @@ function $MessageBox(Id, Text) {
         $PlaySound("Exclamation")
     } else if (Id == 3) {
         $PlaySound("CriticalError")
-        sound.play();
     } else if (Id == 4) {
         $PlaySound("Error")
     }
-    //return Window // Later 0.0
+        return Window // Later 0.0
 }
 
 // Make Window (Used for advanced windows making)
-function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, Draggable, MarginLeft, MarginTop) {
+function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, Draggable, Resizable, MarginLeft, MarginTop) {
     const RWindow = document.createElement("div") // Window Tab
     RWindow.className = 'window centerxy'
     RWindow.style.width = Width
     RWindow.style.height = Height
     RWindow.id = Id
-    RWindow.style.position = "absolute"         
-    if (Draggable !== false || Draggable !== null) {
+    RWindow.style.position = "absolute" 
+    if (Draggable !== false && Draggable == null) {
         RWindow.className = RWindow.className + " drag"           
+    }
+    if (Resizable !== false && Resizable == null) {
+        RWindow.className = RWindow.className + " resize"           
     }
     if (MarginTop !== false || MarginTop !== null) {
         RWindow.style.marginTop=MarginTop;            
@@ -785,16 +858,20 @@ function $MakeWindow(Width, Height, Id, Title, HasCloseButton, HasMinimizeButton
     const RWindowBody = document.createElement("div")
     RWindowBody.className = "window-body"
     RWindow.appendChild(RWindowBody)
-    $( RWindow ).draggable({
-        handle: ".title-bar",
-        containment: ".Desktop"
+    if (Draggable === true) {
+        $( RWindow ).draggable({
+            handle: ".title-bar",
+            containment: ".Desktop"
         }); 
+    }
+    if (Resizable === true) {
         $( RWindow ).resizable({
-          minWidth: 200,
-          minHeight: 50,
-          zIndex: 5,
-          handles: "e, s, n, w, se, sw, ne, nw"
-        });
+            minWidth: 200,
+            minHeight: 50,
+            zIndex: 5,
+            handles: "e, s, n, w, se, sw, ne, nw"
+          });
+    }
 
     //AddElementToBody(Window) // Later 0.0
     return RWindow
@@ -888,9 +965,12 @@ function $Shortcut(Name, Image, Left, Top, Function) {
     shortcutname.style.textAlign = "center"
     shortcutname.innerHTML = name.replace('*."/\[]:;|,',"")
     shortcut.appendChild(shortcutname)
-    
+    shortcut.onclick = function () {
+        shortcut.focus();
+    };
+    shortcut.tabIndex = 0
     // Hardest part
-    if (NoCheck(Function)) {
+    if (!NoCheck(Function)) {
         Function(shortcut)
     }
     document.querySelector(".Desktop").appendChild(shortcut)

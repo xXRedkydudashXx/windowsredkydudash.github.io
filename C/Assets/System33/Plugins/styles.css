@@ -1,5 +1,5 @@
 .background1 {
-    background: url(../Images/Backgound1.png);
+     background: url(../Images/Backgound1.png);
     background-attachment: fixed; 
     background-repeat: no-repeat;
     background-color: red;
@@ -8,6 +8,17 @@
     background-position-x: center;
     min-width: 99%; /* Because cause problems */
     min-height: 99%; /* Because cause problems */
+}
+
+#loadingp{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: calc(-3%);
+    background-image: url(../Images/System/Progressbar.gif);
+    height: 3%;
+    width: 126px;
+    transform: scale(1.2);
 }
 
 pw {
@@ -48,11 +59,11 @@ body {
 }
 
 .bootscreen {
-    background-color: gray;
+    background-color: rgb(120, 120, 120);
     display: block;
     z-index: 99;
     height: 110%;
-    width: 100.5%;
+    width: 101%;
     position: absolute;
     left: 50%;
     transform: translateX(-50.05%) translateY(-8px);
@@ -159,13 +170,34 @@ prsod {
 }
 
 .StartMenu {
-    width: 150px;
-    height: 300px;
+    width: 300px;
+    height: 450px;
+    overflow: hidden;
     background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
+    border-radius: 5px 5px 1px 0px;
+    box-shadow: 1px 3px 10px;
     position: absolute;
     bottom: 35px;
     left: 0;
 }
+
+.StartMenuBottom {
+    width: 300px;
+    height: 50px;
+    background-image: linear-gradient(180deg, rgb(255, 40, 40), rgb(255, 20, 20) 40%, rgb(255, 0, 0));
+    position: absolute;
+    bottom: 0;
+}
+
+.StartMenuTop {
+    width: 300px;
+    height: 50px;
+    background-image: linear-gradient(180deg, rgb(255, 10, 10), rgb(255, 25, 25) 40%, rgb(255, 40, 40));
+    position: absolute;
+    top: 0;
+}
+
+
 
 @keyframes blink {
     0% {
@@ -253,12 +285,12 @@ blink {
     outline-color: rgb(173, 216, 230);
 }
 
-#appicon:focus {
+/* #appicon:focus {
     background-color: rgba(101, 157, 173, 0.4);
     outline-style: dashed;
     outline-width: 0.2px;
     outline-color: rgb(101, 135, 147);
-}
+} */
 
 #appicon:active {
     background-color: rgba(101, 157, 173, 0.4);
@@ -290,6 +322,13 @@ blink {
     -moz-user-select: text;
     -o-user-select: text;
     user-select: text;
+}
+
+.shortcut:focus {
+    background-color: rgba(0, 217, 255, 0.631);
+    outline-style: dashed;
+    outline-width: 0.2px;
+    outline-color: rgb(101, 135, 147);
 }
 
 .notif-bubble {
@@ -436,6 +475,22 @@ blink {
     left: 0;
     top: 0;
 }
+.StartMenuElement {
+    position: relative;
+    left: 15px;
+    display: flex;
+    align-items:center;
+    width: 1.5in;
+    height: 0.5in;
+}
+
+.ShutdownButton:hover {
+    filter: brightness(1.1);
+}
+
+.RebootButton:hover {
+    filter: brightness(1.1);
+}
 
 /* Specials */
 
@@ -449,3 +504,7 @@ blink {
     animation: spin 1.2s infinite linear;
 }
   
+/* Disable hover effect */
+.noHover{
+    pointer-events: none;
+}
