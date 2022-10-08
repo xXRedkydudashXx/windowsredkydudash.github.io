@@ -1,0 +1,50 @@
+.window {
+    box-shadow: inset -1px -1px #8c0000, inset 1px 1px #d90808, inset -2px -2px #a00000, inset 2px 2px #ee1616,
+        inset -3px -3px #da0000, inset 3px 3px #dd0808;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0 0 3px 0;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+}
+.window-body {
+    overflow: hidden;
+}
+.title-bar {
+    font-family: "Trebuchet MS";
+    background: linear-gradient(
+        180deg,
+        rgb(255, 46, 46) 0%,
+        rgb(238, 0, 0) 8%,
+        rgb(194, 0, 0) 40%,
+        rgb(212, 0, 0) 88%,
+        rgb(255, 0, 0) 93%,
+        rgb(255, 0, 0) 95%,
+        rgb(215, 0, 0) 96%,
+        rgb(215, 0, 0) 100%
+    );
+    padding: 3px 5px 3px 3px;
+    border-top: 1px solid #d90808;
+    border-left: 1px solid #d90808;
+    border-right: 1px solid #a00000;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 7px;
+    font-size: 13px;
+    text-shadow: 1px 1px #890f0f;
+    height: 21px;
+}
+
+.title-bar-text {
+    padding-left: 3px;
+    color: #ffffff;
+    user-select: none;
+}
+
+.terminal {
+    display: block;
+    background-color: black;
+    color: #c0c0c0;
+    font-size: 1rem;
+}

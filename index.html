@@ -36,40 +36,41 @@
         <meta name="description" content="A custom operating system">
         <meta name="keywords" content="HTML, CSS, JavaScript">
         <meta name="author" content="xXRedkydudashXx">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
         <meta name="google" content="notranslate" />
 
         <!-- Links -->
-        <link rel="icon" type="image/x-icon" href="C/Assets/System33/Images/WinRedky.png">
-        <link rel="stylesheet" href="C/Assets/System33/Plugins/styles.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link rel="icon" type="image/x-icon" href="C/System33/Images/WinRedky.png">
+        <link rel="stylesheet" href="C/System33/Libraries/styles.css"/>
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> -->
         <link rel="stylesheet" href="https://unpkg.com/xp.css" />
-        <link rel="stylesheet" href="C/Assets/System33/Plugins/windowtheme.css"/>
-        <!-- <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/clippyjs/build/clippy.css" media="all"> -->
-        <link rel="stylesheet" type="text/css" href="C/Assets/System33/Plugins/loadingbar/loading-bar.min.css"/>
-        <link href="https://unpkg.com/jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="C/System33/Libraries/windowtheme.css"/>
+        <link rel="stylesheet" href="C/System33/Libraries/jquery-terminal/jquery.terminal-2.34.0.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="C/System33/Libraries/clippyjs/build/clippy.css" media="all"> -->
         
         <!-- Scripts Link -->
-        <script type="text/javascript" src="C/Assets/System33/System33.js"></script>
-        <!-- <script src="C/Assets/System33/Plugins/ruffle/ruffle.js"></script> -->
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-        <!-- <script src="C/Assets/System33/Plugins/clippyjs/build/clippy.min.js"></script> -->
-        <script type="text/javascript" src="C/Assets/System33/Plugins/loadingbar/loading-bar.min.js"></script>
-        <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.js"></script>
+        <script type="text/javascript" src="C/System33/System33.js"></script>
+        <!-- <script src="C/System33/Libraries/ruffle/ruffle.js"></script> -->
+        <script src="C/System33/Libraries/jquery-3.6.1.min.js"></script>
+        <script src="C/System33/Libraries/jquery-ui-1.13.2.min.js"></script>
+        <script src="C/System33/Libraries/jquery-draggable-touch.js "></script>
+        <script src="C/System33/Libraries/jquery-doubletap.js"></script>
+        <script src="C/System33/Libraries/jquery.ui.touch-punch.min.js"></script>
+        <!-- <script src="C/System33/Libraries/clippyjs/build/clippy.min.js"></script> -->
+        <script src="C/System33/Libraries/jquery-terminal/jquery.terminal-2.34.0.min.js"></script>
 
 
     </head>
     <Body class="background1" id ="background">
 
 <div alt="AudioLibrary">
-  <audio src="C/Assets/System33/Sounds/critialerror.wav" id="CriticalError">critialerror</audio>
-  <audio src="C/Assets/System33/Sounds/error.wav" id="Error">error</audio>
-  <audio src="C/Assets/System33/Sounds/exclamation.wav" id="Exclamation">exclamation</audio>
-  <audio src="C/Assets/System33/Sounds/betastartup.wav" id="Startup">startup</audio> <!--Currently in Beta-->
-  <audio src="C/Assets/System33/Sounds/betashutdown.wav" id="Shutdown">shutdown</audio> <!--Currently in Beta-->
-  <audio src="C/Assets/System33/Sounds/ballon.wav" id="Ballon">ballon</audio>
-  <audio src="C/Assets/System33/Sounds/reversedcritital.wav" id="ReversedCriticalError">reversedcrititalerror</audio>
+  <audio src="C/System33/Sounds/critialerror.wav" id="CriticalError">critialerror</audio>
+  <audio src="C/System33/Sounds/error.wav" id="Error">error</audio>
+  <audio src="C/System33/Sounds/exclamation.wav" id="Exclamation">exclamation</audio>
+  <audio src="C/System33/Sounds/betastartup.wav" id="Startup">startup</audio> <!--Currently in Beta-->
+  <audio src="C/System33/Sounds/betashutdown.wav" id="Shutdown">shutdown</audio> <!--Currently in Beta-->
+  <audio src="C/System33/Sounds/ballon.wav" id="Ballon">ballon</audio>
+  <audio src="C/System33/Sounds/reversedcritital.wav" id="ReversedCriticalError">reversedcrititalerror</audio>
 </div>
 
 <script>
@@ -114,6 +115,7 @@ if(hours > 11){
  setTimeout(timer,1000);
  $(document).ready(function() {
   $( ".drag" ).draggable({
+    scroll: false,
     handle: ".title-bar",
     containment: ".Desktop"
     }); 
@@ -134,32 +136,15 @@ if(hours > 11){
 
   </script>
 <div class="bootscreen" id="bootscreen" style="user-select:none;">
-  <img src="C/Assets/System33/Boot/WindowsRedkydudashLogo.png" alt="WinRedkyStartLogo" class="startup noHover" height="45%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(10%);" draggable="false"> <br>
-  <img src="C/Assets/System33/Images/System/Progressbar.gif" class="startup2 noHover" height="2%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(0%);" draggable="false"> <br>
-  <!-- <div   data-type="fill"
-  data-img="C/Assets/System33/Images/loading.gif" id="ldBarStatup" style="margin-left: 42%; margin-top: 0%; width:150px;"></div>
-  <script>
-    /* construct manually */
-    var bar1 = new ldBar("#ldBarStatup");
-    /* ldBar stored in the element */
-    var bar2 = document.getElementById('ldBarStatup').ldBar;
-    for (let i=0; i<10; i++) {
-   task(i);
-}
-  
-function task(i) {
-  setTimeout(function() {
-      bar1.set(i*35);
-  }, 1200 * i);
-}
-  </script> -->
-
+  <img src="C/System33/Boot/WindowsRedkydudashLogo.png" id="startupscreen1" alt="WinRedkyStartLogo" class="startup noHover" height="45%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(10%);" draggable="false"> <br>
+  <img src="C/System33/Images/System/Progressbar.gif" id="startupscreen2" class="startup2 noHover" height="2%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(0%);" draggable="false"> <br>
+  <noscript style="display: block; margin-left: calc(50% - 150px); margin-top: calc(0%);" draggable="false"><pw>Error: Javascript is disabled <br> You need to enable Javascript to run Windows Redkydudash <br> <blink>_</blink></pw></noscript>
 </div>
 
 
 
 
-<div class="window centerxy drag resize" style="width: 300px;" id="WelcomeMessage">
+<div class="window drag resize" style="width: 300px; top: calc(50% - 50px); left: calc(50% - 150px);" id="WelcomeMessage">
   <div class="title-bar">
     <div class="title-bar-text">Welcome!</div>
     <div class="title-bar-controls">
@@ -167,7 +152,7 @@ function task(i) {
     </div>
   </div>
   <div class="window-body">
-      <img src="C/Assets/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
+      <img src="C/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
     <p style="margin-left: 55px;">Welcome to Windows Redkydudash!</p>
     <p style="margin-left: 55px;" class="wtversion"></p>
     <br>    <!-- ><blink>_</blink> -->
@@ -177,25 +162,61 @@ function task(i) {
 
 <div class="Desktop" style="user-select:none;">
 
-  <div id="appicon" tabindex="0" ondblclick="OpenApp(1)" class="Creditstxt shortcut" style="top: 10px;">
-    <img src="C/Assets/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+  <div id="appicon" tabindex="0" class="Creditstxt shortcut" style="top: 10px;">
+    <img src="C/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
     <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Credits.txt</p>
+    <script>
+      $(".Creditstxt")
+      .dblclick(function(){
+        $Exe("1")
+      })
+      .doubletap(function() {
+        $Exe("1")
+      });
+      </script>
   </div>
-  <div id="appicon" tabindex="0" ondblclick="OpenApp(5)" class="ColorPicker shortcut" style="top: 75px;">
-    <img src="C/Assets/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+  <div id="appicon" tabindex="0" class="ColorPicker shortcut" style="top: 75px;">
+    <img src="C/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
     <p style="color: white; font-size: 8px; margin-top: 0%; text-align: center;">Color Picker</p>
+    <script>
+      $(".ColorPicker")
+      .dblclick(function(){
+        $Exe("5")
+      })
+      .doubletap(function() {
+        $Exe("5")
+      });
+      </script>
   </div>
-  <div id="appicon" tabindex="0" ondblclick="OpenApp('clock')"  class="Clock shortcut" style="top: 140px;">
-    <img src="C/Assets/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+  <!-- <div id="appicon" tabindex="0" ondblclick="$Exe('clock')"  class="Clock shortcut" style="top: 140px;">
+    <img src="C/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
     <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Clock</p>
-  </div>
-  <div id="appicon" tabindex="0" ondblclick="OpenApp('websitebrowser')" class="WebsiteBrowser shortcut" style="top: 205px;">
-    <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+  </div> -->
+  <div id="appicon" tabindex="0" class="WebsiteBrowser shortcut" style="top: 140px;">
+    <img src="C/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
     <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Website Browser (W.I.P.)</p>
+    <script>
+      $(".WebsiteBrowser")
+      .dblclick(function(){
+        $Exe("websitebrowser")
+      })
+      .doubletap(function() {
+        $Exe("websitebrowser")
+      });
+      </script>
   </div>
-  <div id="appicon" tabindex="0" ondblclick="OpenApp('terminal')" class="Therminal shortcut" style="top: 270px;">
-    <img src="C/Assets/System33/Icons/Apps/Terminal.svg" alt="Terminal" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+  <div id="appicon" tabindex="0" class="Terminal shortcut" style="top: 205px;">
+    <img src="C/System33/Icons/Apps/Terminal.svg" alt="Terminal" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
     <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Terminal (W.I.P.)</p>
+    <script>
+      $(".Terminal")
+      .dblclick(function(){
+        $Exe("terminal")
+      })
+      .doubletap(function() {
+        $Exe("terminal")
+      });
+      </script>
   </div>
 </div>
 
@@ -203,34 +224,43 @@ function task(i) {
 
 <div class="Taskbar">
     <div class="StartButton" onclick="if(document.getElementById('StartMenu').getAttribute('visible')=='false') {document.getElementById('StartMenu').style.display='block'; document.getElementById('StartMenu').setAttribute('visible', true)} else {document.getElementById('StartMenu').style.display='none'; document.getElementById('StartMenu').setAttribute('visible', false)}">
-    <img src="C/Assets/System33/Images/WinRedky.png" alt="WinRedkyStart" style="width:30px; margin-top: 5%; margin-left: 5px; filter: drop-shadow(0.8px 1px 0.5px);" draggable="false">
+    <img src="C/System33/Images/WinRedky.png" alt="WinRedkyStart" style="width:30px; margin-top: 5%; margin-left: 5px; filter: drop-shadow(0.8px 1px 0.5px);" draggable="false">
     <div style="display:inline-block; text-shadow: 0.8px 1px 0.5px rgba(0, 0, 0, 0.5); margin-left: 5px;" class="StartText" unselectable="on" onselectstart="return false;" onmousedown="return false;">start</div>
     </div>
-    <div class="StartMenu" visible="false" id="StartMenu" style="display: none; z-index: 2;">
+    <div class="StartMenu" visible="false" id="StartMenu" style="display: none; z-index: 99;">
       <div class="StartMenuInsideLeft">
-        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" style="margin-top: 50px" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; OpenApp('websitebrowser')">
-          <img src="C/Assets/System33/Icons/Apps/WebsiteBrowser.svg" alt="WBrowser" style="width: 35px; padding-right: 10px;">
+        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" style="margin-top: 50px" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Exe('websitebrowser')">
+          <img src="C/System33/Icons/Apps/WebsiteBrowser.svg" alt="WBrowser" style="width: 35px; padding-right: 10px;">
           <p style="vertical-align: middle;">Website Browser</p>
         </div>
+        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Fullscreen()">
+          <img src="C/System33/Icons/System/Fullscreen.svg" alt="FullscreenIcon" style="width: 35px; padding-right: 10px;">
+          <p style="vertical-align: middle;">Fullscreen</p>
+        </div>
+        <hr>
         <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; SystemFunction(2)">
           <img src="" style="width: 35px; padding-right: 10px;">
           <p style="vertical-align: middle;">Run</p>
         </div>
+        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Exe('terminal')">
+          <img src="C/System33/Icons/Apps/Terminal.svg" style="width: 35px; padding-right: 10px;">
+          <p style="vertical-align: middle;">Command Prompt</p>
+        </div>
       </div>
-      <div class="StartMenuTop">       
-        <pw style="font-size: 20px; position: relative; top: 12.5px; left: 15px; text-shadow: 1.5px 1px 1.9px rgba(0, 0, 0, 0.5);">Administrator</pw>
+      <div class="StartMenuTop">
+        <pw style="font-family: url('C/System33/Fonts/ms_sans_serif.woff2'); font-size: 20px; position: relative; top: 12.5px; left: 15px; text-shadow: 1.5px 1px 1.9px rgba(0, 0, 0, 0.5);">Administrator</pw>
       </div>
       <div class="StartMenuBottom">
-         <div class="RebootButton" name="RebootButton" style="border: 0px; position: absolute; background: none; right: 45%; top: 2px; z-index: 1000px;" onclick="$Reboot()">
-          <img src="C/Assets/System33/Icons/System/Reboot.svg" alt="RebootIcon" style="vertical-align:middle">
+         <div class="RebootButton" name="RebootButton" style="border: 0px; position: absolute; background: none; right: calc(0% + 150px); top: 2px; z-index: 1000px;" onclick="$Reboot()">
+          <img src="C/System33/Icons/System/Reboot.svg" alt="RebootIcon" style="vertical-align:middle">
           <pw style="font-size: 17.5px; vertical-align: middle; padding: 0px 5px 0px 5px;">Reboot</pw>
         </div>
         <!-- <div class="LogoffButton" name="LogoffButton" style="border: 0px; position: absolute; background: none; right: 45%; top: 2px; z-index: 1000px;" onclick="$Logoff()">
-          <img src="C/Assets/System33/Icons/System/Logoff.svg" alt="logoffIcon" style="vertical-align:middle">
+          <img src="C/System33/Icons/System/Logoff.svg" alt="logoffIcon" style="vertical-align:middle">
           <pw style="font-size: 17.5px; vertical-align: middle; padding: 0px 5px 0px 5px;">Log Off</pw>
         </div> -->
         <div class="ShutdownButton" name="ShutdownButton" style="border: 0px; position: absolute; background: none; right: 0%; top: 2px; z-index: 1000px;" onclick="$Shutdown()">
-          <img src="C/Assets/System33/Icons/System/Shutdown.svg" alt="ShutdownIcon" style="vertical-align:middle">
+          <img src="C/System33/Icons/System/Shutdown.svg" alt="ShutdownIcon" style="vertical-align:middle">
           <pw style="font-size: 17.5px; vertical-align: middle; padding: 0px 5px 0px 5px;">Shutdown</pw>
         </div>
       </div>
@@ -240,7 +270,7 @@ function task(i) {
       
     </div>
     <div class="TaskbarToolbar">
-      <pw id='date-time' style="position: absolute; padding-left: 20%; padding-top: 5px; font-size: 150%;">S</pw>
+      <pw id='date-time' style="position: absolute; font-family: 'Pixelated MS Sans Serif'; right: 10%; top: calc(25% + 2.5px); font-size: 100%;">00:00 AM</pw>
     </div>
     <div class="Notifications" style="z-index: 999; position: fixed; bottom: 70px; right: 27px;">
       
