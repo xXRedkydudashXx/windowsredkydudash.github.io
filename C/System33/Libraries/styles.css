@@ -31,10 +31,20 @@ image {
 
 body {
     overflow: hidden; /* Hide scrollbars */
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:auto;
-    margin-bottom:auto;
+    margin: 0;
+    padding: 0;
+}
+
+#startupscreen1 {
+    position:absolute; 
+    top:-20%; left:0; right:0; bottom:0; 
+    margin:auto;
+}
+
+#startupscreen2 {
+    position:absolute; 
+    top:20%; left:0; right:0; bottom:0; 
+    margin:auto;
 }
 
 .startup {
@@ -349,8 +359,18 @@ blink {
     animation: appear 750ms linear 0s 1 normal forwards;
 }
 
-.notif-bubble-close:focus {
-    filter: brightness(0);
+.notif-bubble span:hover {
+    outline: 0.5px inset;
+    color: #000000;
+}
+
+.notif-bubble span {
+    background-color: #ffdcdc;
+    outline: 0.25px inset;
+    border-radius: 3px;
+    font-size: 150%;
+    text-align: center;
+    line-height: 15.25px;
 }
 
 .notif-bubble-bottom {

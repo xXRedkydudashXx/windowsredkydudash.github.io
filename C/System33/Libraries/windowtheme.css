@@ -48,3 +48,39 @@
     color: #c0c0c0;
     font-size: 1rem;
 }
+
+.windowout {
+    box-shadow: inset -1px -1px #ff7070, inset 1px 1px #ff9090, inset -2px -2px #ffc4c4, inset 2px 2px #ffb1b1,
+        inset -3px -3px #ff7070, inset 3px 3px #ff9191;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0 0 3px 0;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    z-index: 9;
+    overflow: hidden;
+}
+
+.title-barout {
+    font-family: "Trebuchet MS";
+    background: linear-gradient(
+        180deg,
+        rgb(255, 228, 228) 0%,
+        rgb(255, 192, 192) 8%,
+        rgb(255, 163, 163) 40%,
+        rgb(255, 144, 144) 88%,
+        rgb(255, 155, 155) 93%,
+        rgb(255, 156, 156) 95%,
+        rgb(255, 151, 151) 96%,
+        rgb(255, 151, 151) 100%
+    );
+    padding: 3px 5px 3px 3px;
+    border-top: 1px solid #ffbebe;
+    border-left: 1px solid #ffb5b5;
+    border-right: 1px solid #ffb5b5;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 7px;
+    font-size: 13px;
+    text-shadow: 1px 1px #c26c6c;
+    height: 21px;
+}
