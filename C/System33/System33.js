@@ -1,7 +1,7 @@
 // console.log("Hello World!")
 // import settings from './example.json' assert {type: 'json'};
 // console.log(settings);
-CurrVersion = "Pre-Alpha 1.1.3"
+CurrVersion = "Pre-Alpha 1.0.4"
 Booted = false
 
 // Functions needed
@@ -141,11 +141,11 @@ const toBool = (stringValue) => {
         });
     });
 }
-function createBlob(data) {
+function $File(data) {
     return new Blob([data], { type: "text/plain" });
   }
   
-  function saveAs(content, fileName) {
+  function $Download(content, fileName) {
     const a = document.createElement("a");
     const isBlob = content.toString().indexOf("Blob") > -1;
     let url = content;
@@ -166,7 +166,8 @@ function createBlob(data) {
 //         $MessageBox(3, error) 
 //       } 
 // }        // Currently in alpha
-async function $MoveTo(params){
+function $MoveTo(params){
+    {
     var pleft = params.left
     var ptop = params.top
     if (params.iterations) {
@@ -180,8 +181,7 @@ async function $MoveTo(params){
         var peasing = "linear"
     }
     if (params.element !== undefined && params.element !== null) {
-        const Element = params.element
-        Element.animate([
+        params.element.animate([
             // keyframes
             { top:ptop, left:pleft }
           ], {
@@ -191,37 +191,75 @@ async function $MoveTo(params){
             easing: peasing
           });
           setTimeout(() => {
-            Element.style.top = ptop
-            Element.style.left = pleft
+            params.element.style.top = ptop
+            params.element.style.left = pleft
           }, params.duration);
           
     }
+    }
+}
+function $Audio(sound, pitch = 1, volume = 1){
+    var audio = $Kernel.System33.audios[sound].cloneNode()
+    audio.pitch = pitch
+    audio.playbackRate = pitch
+    audio.volume = volume
+    document.head.appendChild(audio)
+    audio.addEventListener("ended", ()=>{audio.remove()})
+    return audio
 }
 // End Functions needed
+var Desktop
 
-function $PlaySound(sound) {
-    var sound = document.getElementById(sound).cloneNode(true)
-    sound.play();
-}
+setTimeout(() => {  // Next TODO: Fix errors and prevent forgetting (+ clearer code)
+    try {
+        Desktop = document.querySelector(".Desktop").cloneNode()
+    } catch (error) {}
+    if (localStorage.LocalDesktop && localStorage.LocalDesktop.includes("div")) {
+        if (Desktop) {Desktop.innerHTML = ""}
+        Shortcuts = document.createElement("div")
+        Shortcuts.id = "shortcuts"
+        Shortcuts.appendChild(document.createRange().createContextualFragment(localStorage.LocalDesktop))
+        if (Shortcuts) {Desktop.appendChild(Shortcuts)}
+    } else {
+        Shortcuts = document.querySelector(".Desktop").querySelector("#shortcuts")
+        Desktop.appendChild(Shortcuts)
+    }
+    document.querySelector(".Desktop").remove()
+}, 20);
 
+var checkBoot = setInterval(() => {
+    if (Booted !== false) {
+    document.getElementById("bootscreen").style.visibility = "hidden" // Never remove it for some reasons
+    //$Audio("startup").play()
+    window.scrollTo(0,0)
+    DesktopStorage = setInterval(() => {
+        if (Desktop) { localStorage.LocalDesktop = Desktop.querySelector("#shortcuts").innerHTML; }
+    }, 10);
+    if (Desktop) { document.body.appendChild(Desktop)}
+    document.querySelector(".Taskbar").style.visibility = "visible";
+    document.querySelector(".StartMenu").style.visibility = "visible";
+    // Settings up fuctions:
+
+    // Little beta/alpha info:
+    setTimeout(() => {
+        $MessageBox({Type:1,Msg:"Welcome to Windows Redkydudash! <br> Current Version: "+CurrVersion,Sound:null, Return: true}).style.minWidth = "250px"
+        setTimeout(() => {
+            $Notify({Msg:"The website is still in alpha/beta stat", Title:"<img src='C/System33/Icons/System/info.png' width='12.5'> Information", Length:7000})
+        }, 4500);
+    }, 500);
+    clearInterval(checkBoot)
+    }
+}, 10);
+
+var DesktopStorage
 setTimeout(async function(){
     await sleep(5000)
     if (document.getElementById("bootscreen")) {
         if (document.getElementById("bootscreen").style.visibility !== "hidden") {
-            document.getElementById("bootscreen").style.visibility = "hidden" // Never remove it for some reasons
-            $PlaySound("Startup")
             Booted = true
+            document.dispatchEvent(new CustomEvent("onbooted"))
         }
     }   
-    // Settings up fuctions:
-    setInterval(() => {
-        localStorage.LocalDesktop = document.querySelector(".Desktop").querySelector("#shortcuts").innerHTML
-    }, 5000);
-
-    // Little beta/alpha info:
-    setTimeout(() => {
-        $Notify({Msg:"The website is still in alpha/beta stat", Title:"<img src='C/System33/Icons/WinRedkyExclusif/info.png' width='12.5'> Information", Length:7000}) 
-    }, 5000);
 }, 1)
 setInterval(function () {    $( ".window" ).draggable({scroll: false, handle: ".title-bar", containment: ".Desktop"}); }, 10000);
 setInterval(()=>{$(".resizable").resizable({minWidth:165,minHeight:50,handles:"e, s, n, w, se, sw, ne, nw"})},1e10);
@@ -229,7 +267,7 @@ setInterval(function () {    $( ".shortcut" ).draggable({   containment: ".Deskt
 
 document.onkeydown = function(e) {
     var evtobj = window.event? event : e
-    if (evtobj.keyCode == 85 && evtobj.ctrlKey && evtobj.shiftKey) {if (Booted === false) {Booted = true; document.querySelector("#bootscreen").style.visibility = "hidden"; document.querySelector("#startupscreen1").style.display = "none"; document.querySelector("#startupscreen2").style.display = "none";}};
+    if (evtobj.keyCode == 85 && evtobj.ctrlKey && evtobj.shiftKey) {if (Booted === false) {Booted = true; document.dispatchEvent(new CustomEvent("onbooted")); document.querySelector("#bootscreen").style.visibility = "hidden"; document.querySelector("#startupscreen1").style.display = "none"; document.querySelector("#startupscreen2").style.display = "none";}}; //Ctrl+Shirt+U
 };
 
 
@@ -240,7 +278,7 @@ async function SystemFunction(Identifiant) {
     }
 
     if (Identifiant == 2) {
-        var Window = $MakeWindow({Width:"250px", Height:"150px", Id:"run", Title:"Run", HasCloseButton: true, HasMinimizeButton: false, HasMaximizeButton: false, HasHelpButton: true, Resizable: false, Left:"75px", Top:"calc(80% - 50px)"})
+        var Window = $MakeWindow({Width:"250px", Height:"150px", Id:"run", Title:"Run", CloseButton: true, MinimizeButton: false, MaximizeButton: false, HelpButton: true, Resizable: false, Left:15, Top:80, Return: true})
         var WindowBody = Window.querySelector(".window-body")
         var WindowHelp = Window.querySelector('[aria-label="Help"]')
         WindowHelp.setAttribute("enabled", "true")
@@ -257,7 +295,7 @@ async function SystemFunction(Identifiant) {
         const Icon = document.createElement("img")
         Icon.style.float = "left"
         Icon.draggable = false
-        Icon.src = "C/System33/Icons/WinRedkyExclusif/info.png"
+        Icon.src = "C/System33/Icons/System/info.png"
         Icon.alt = "Information"
         WindowBody.appendChild(Icon)
         var Text = AddText("Type the name of a program or a application, and Windows Redkydudash will open it for you.")
@@ -313,7 +351,7 @@ async function wrdebug(command, value) {
     if (!command) {
         console.log("Debug what?")
     } else {
-        if (command === "crash")  {
+        if (command.name === "crash")  {
             document.location.href = "C/System33/Others/rsod.html"
         }
     }
@@ -334,6 +372,7 @@ async function wrdebug(command, value) {
 
 
 function $Reboot() {
+    window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname 
     document.location.reload(true)
 }
 
@@ -345,15 +384,17 @@ function $Shutdown() {
         window.remove()
     })
     //
-    $PlaySound("Shutdown")
+    $Audio("shutdown").play()
     setTimeout(() => {
         document.querySelector(".bootscreen").style.visibility = "visible"
+        document.querySelector(".bootscreen").style.backgroundColor = color4(0,0,0,1)
+        document.querySelector(".bootscreen").appendChild(document.createRange().createContextualFragment("<div style='display: table;width: 100%;height: "+window.innerHeight+"px;text-align:center;'><p style='display:table-cell;vertical-align:middle;color: "+color4(255,255,255,1)+"'>It's now safe to close your webpage</p></div>"))
     }, 4150);
 }
 
 async function $Exe(App) {
     if (App == 1) {
-        const Window = $MakeWindow({Width:"400px", Height:"300px", Id:"Notepad", Title:"CreditNotepad", HasMinimizeButton:true, HasMaximizeButton:true, HasHelpButton:false}) //-- After
+        const Window = $MakeWindow({Width:"400px", Height:"300px", Id:"Notepad", Title:"CreditNotepad", MinimizeButton:true, MaximizeButton:true, HelpButton:false, Return: true}) //-- After
         const WindowBody = Window.querySelector(".window-body")
         WindowBody.style.height = "calc(100% - 40px)"
         Window.style.backgroundColor = "white"
@@ -409,7 +450,7 @@ async function $Exe(App) {
     //     }
     // }
     if (App.toLowerCase() == 'notepad') {
-        const Window = $MakeWindow({Width:"400px", Height:"300px", Id:"Notepad", Title:"Notepad", HasMinimizeButton:true, HasMaximizeButton:true, HasHelpButton:false}) //-- After
+        const Window = $MakeWindow({Width:"400px", Height:"300px", Id:"Notepad", Title:"Notepad", MinimizeButton:true, MaximizeButton:true, HelpButton:false, Return: true}) //-- After
         const WindowBody = Window.querySelector(".window-body")
         WindowBody.style.height = "calc(100% - 27.5px)"
         WindowBody.style.width = "calc(100% - 6px)"
@@ -434,65 +475,127 @@ async function $Exe(App) {
         SaveFileButton.style.minHeight = "calc(100% - 2px)"
         SaveFileButton.innerHTML = "Save as .txt file"
         SaveFileButton.onclick = function(){
-            saveAs(createBlob(textarea.value), "NewFile.txt")
+            $Download($File(textarea.value), "NewFile.txt")
         }
         StatueBar.appendChild(SaveFileButton)
         AddElementToBody(Window)
     } else
     if (App.toLowerCase() == 'terminal') {
-        const Termapp = $MakeWindow({Width:"350px", Height:"275px", Id:"terminalwindow", Title:"Command Prompt", HasMaximizeButton: true, HasMinimizeButton: true, HasHelpButton: false})
+        const Termapp = $MakeWindow({Width:"350px", Height:"275px", Id:"terminalwindow", Title:"Command Prompt", MaximizeButton: true, MinimizeButton: true, HelpButton: false, Return: true})
+        RandomId = Math.floor(Math.random()*20000); // he need to get an ID to have multiple windows, for some reasons
         const Termbody = Termapp.getElementsByClassName("window-body")[0]
         const Terminal = document.createElement("div")
         Termbody.appendChild(Terminal)
-        RandomId = Math.floor(Math.random() * RandomInt(1,10000)); // he need to get an ID to have multiple windows
         Termbody.style.setProperty("height", "calc(100% - 30px)")
         Termbody.style.setProperty("width", "calc(100% - 5px)")
         Terminal.id = "dosterm"+RandomId
         Terminal.style.left = "-10px"
         Terminal.style.top = "-10px"
         Termapp.style.backgroundColor = "black"
-        var __EVAL = (s) => eval(`void (__EVAL = ${__EVAL}); ${s}`);
         $(function() {
+            var animation = false;
+            var timer;
+            var prompt;
+            var string;
             $('#dosterm'+RandomId).terminal(function(command, term) {
-                if (command.substring(0,4) == 'help') {
+                var __EVAL = (s) => eval(`void (__EVAL = ${__EVAL}); ${s}`);
+                // Functions
+                this.window = Termapp
+                this.id = RandomId
+                this.version = CurrVersion
+                terminal = this
+                this.warn = (msg) => {return this.echo("[[;yellow;]"+msg)}
+                this.exit = () => {Termapp.remove()}
+                this.beep = (freq=750, duration=100, type="sine") => {
+                    const context = new AudioContext()
+                    const oscillator = context.createOscillator()
+                    oscillator.type = type;
+                    oscillator.frequency.setValueAtTime(freq, context.currentTime); // value in hertz
+                    oscillator.connect(context.destination);
+                    oscillator.start();
+                    oscillator.stop(duration/1000)
+                }
+                this.progressbar = (size, speed) => {
+                    function progress(percent, width) {
+                        var size = Math.round(width*percent/100);
+                        var left = '', taken = '', i;
+                        for (i=size; i--;) {
+                            taken += '=';
+                        }
+                        if (taken.length > 0) {
+                            taken = taken.replace(/=$/, '>');
+                        }
+                        for (i=width-size; i--;) {
+                            left += ' ';
+                        }
+                        return '[' + taken + left + '] ' + percent + '%';
+                    }
+                    var i = 0, speed = speed || 100;
+                    prompt = terminal.get_prompt();
+                    string = progress(0, size);
+                    terminal.set_prompt(progress);
+                    animation = true;
+                    return (function loop() {
+                        string = progress(i++, size);
+                        terminal.set_prompt(string);
+                        if (i < 100) {
+                            timer = setTimeout(loop, speed/2);
+                        } else {
+                            terminal.echo(progress(i, size) + ' [[b;green;]OK]')
+                                .set_prompt(prompt);
+                            animation = false
+                            return true
+                        }
+                    })();
+                }
+                // End of functions
+                if ($.terminal.parse_command(command).name == 'help') {
                     this.echo("Available commands:")
                     this.echo("help: shows a list of command")
+                    this.echo("id: the current id of the terminal")
                     this.echo("exit: leave the console")
                     this.echo("echo: type a message that the command will show")
                     this.echo("demo: a little demo of what the terminal can do")
+                    this.echo("ver: return the current version of Windows Redkydudash")
                     this.echo("")
-                } else if (command.substring(0,4) == 'exit') {
-                    Termapp.remove()
-                } else if (command.substring(0,4) === 'echo' && command.indexOf("o ", 3) == 3) {
-                    this.echo(command.slice(5));
-                } else if (command === "demo") {
+                } else if ($.terminal.parse_command(command).name == 'exit') {
+                    this.exit()
+                } else if ($.terminal.parse_command(command).name === 'echo') {
+                    this.echo($.terminal.parse_command(command).args[1]);
+                } else if ($.terminal.parse_command(command).name == 'id') {
+                    this.echo("ID N°"+this.id)
+                } else if ($.terminal.parse_command(command).name == 'ver') {
+                    this.echo("Version "+this.version)
+                } else if ($.terminal.parse_command(command).name === "demo") {
                     this.exec([
                         'echo hello world!',
                         'for (let index = 0; index < 10; index++) {setTimeout(() => {$Notify({Msg:"world!", Title:"Hello"})}, index*500)}',
                         '$MessageBox({Type:3, Msg:"Error (sorry)"})',
-                        'RandomInt(1, 20)',
+                        //'this.progressbar(RandomInt(1, 20), 50)',
                         '$Exe("butterfly")',
                         '$Shortcut("Terminal", "C/System33/Icons/Apps/Terminal.svg", "50%", "50%", function(){$MessageBox({Type:3, Msg: "Error: Corrupted File"}); document.querySelector("div[name=\\"Terminal\\"]").remove()})',
+                        
                     ], {typing: true, delay: 15});
-                } else if (command === "disablehist") {
+                } else if ($.terminal.parse_command(command).name === "disablehist") {
                     term.history().disable()
-                } else if (command === "enablehist") {
+                } else if ($.terminal.parse_command(command).name === "enablehist") {
                     term.history().enable()
-                } else if (command === "clearthist") {
+                } else if ($.terminal.parse_command(command).name === "clearthist") {
                     term.history().set()
+                } else if ($.terminal.parse_command(command).name === "reboot") {
+                    $Reboot()
+                } else if ($.terminal.parse_command(command).name === "shutdown") {
+                    Termapp.remove()
+                    $Shutdown()
                 } else {
                 if (command !== '') {
                     try {
-                        var result = __EVAL(command);
+                        var result = __EVAL(command);   //"term = $('#dosterm'+"+RandomId+").terminal();"
                         if (result !== undefined) {
                             this.echo(new String(result));
                         }
                     } catch(e) {
                         this.error(new String(e));
-                    }
-                } else {
-                     {
-                        
                     }
                 }
             }
@@ -500,7 +603,18 @@ async function $Exe(App) {
                 greetings: "Hello world! \n type help to get a list of current commands",  
                 name: 'dos',
                 height: 300,
-                prompt: '>'
+                prompt: '>',
+                keydown: function(e, term) {
+                    if (animation) {
+                        if (e.which == 68 && e.ctrlKey) { // CTRL+D
+                            clearTimeout(timer);
+                            animation = false;
+                            term.echo(string + ' [[b;red;]FAIL]')
+                                .set_prompt(prompt);
+                        }
+                        return false;
+                    }
+                }
             },
                      $("#dosterm").css({
             "--color": "black",
@@ -510,12 +624,12 @@ async function $Exe(App) {
          })
          setInterval(() => {
             Terminal.style.height = "100%"
-         }, 20);
+         }, 9); // Reduces everytime
          
         AddElementToBody(Termapp)
     } else
     if (App.toLowerCase() == 'websitebrowser') {
-            const WBrowser = $MakeWindow({Width:"1025px", Height:"600px", Id:"WebsiteBrowser", Title:"Website Browser", HasMaximizeButton: true, HasMinimizeButton: true})
+            const WBrowser = $MakeWindow({Width:"1025px", Height:"600px", Id:"WebsiteBrowser", Title:"Website Browser", MaximizeButton: true, MinimizeButton: true, Return:true})
             WBrowser.style.left = "25%"
             WBrowser.style.top = "25%"
             const BrowserBody = WBrowser.querySelector(".window-body")
@@ -527,7 +641,7 @@ async function $Exe(App) {
             WBrowserIFrame.style.overflow = "auto";
             const WBrowserSearchBar = document.createElement("input");
             WBrowserSearchBar.setAttribute("type", "text");
-            WBrowserSearchBar.size = 182.5;
+            WBrowserSearchBar.style = "width:calc(100% - 75px)";
             BrowserBody.appendChild(WBrowserSearchBar);
             const WBrowserSearchButton = document.createElement("button");
             WBrowserSearchButton.textContent = "Search";
@@ -537,7 +651,7 @@ async function $Exe(App) {
             AddElementToBody(WBrowser)
             WBrowserSearchButton.onclick = function(){
             var input = WBrowserSearchBar.value
-            console.log(input)
+            // console.log(input)
             if(input.match(/\bhttp(.)*/)) {
                 WBrowserIFrame.src = input;
             } else {
@@ -550,14 +664,14 @@ async function $Exe(App) {
     } else
     if (App.toLowerCase() == 'butterflymenu') {
         if (document.getElementById("ButterflyMenu") === null) {
-            var Window = $MakeWindow({Width:"250px", Height:"100px", Id:"ButterflyMenu", Title:"Butterfly", HasMaximizeButton: false, HasMinimizeButton: false, HasHelpButton: true})
+            var Window = $MakeWindow({Width:"250px", Height:"100px", Id:"ButterflyMenu", Title:"Butterfly", MaximizeButton: false, MinimizeButton: false, HelpButton: true, Return: true})
             var WindowBody = Window.querySelector(".window-body")
             var WindowHelp = Window.querySelector('[aria-label="Help"]')
             WindowHelp.setAttribute("enabled", "true")
             WindowHelp.onclick = async function(){
                 if (WindowHelp.getAttribute("enabled") == "true") {
                     WindowHelp.setAttribute("enabled", "false")
-                    $MessageBox(2, "Butterfly allows you to create butterflys on the desktop. Thoses butterflys will fly randomly until they leave.")
+                    $MessageBox({Type:2, Msg:"Butterfly allows you to create butterflys on the desktop. Thoses butterflys will fly randomly until they leave."})
                     await sleep(2000)
                     WindowHelp.setAttribute("enabled", "true")
                 } else {
@@ -582,7 +696,7 @@ async function $Exe(App) {
                         Window.remove()
                       }
                 } else {
-                    $MessageBox(1, "Incorrect Number: the number is too small or to big")
+                    $MessageBox({Type:1, Msg:"Incorrect Number: the number is too small or to big (Max 100)"})
                 }
 
             }
@@ -657,6 +771,92 @@ async function $Exe(App) {
     }
 }
 
+//import * as $ from "../../C/System33/Libraries/jquery-3.6.1.min.js";
+
+// Open notepad from a file name then content
+function $Edit(Name="NewFile.txt", Content="") {
+    const Window = $MakeWindow({Width:"400px", Height:"300px", Id:"Notepad", Title:"Notepad", MinimizeButton:true, MaximizeButton:true, HelpButton:false, Return: true})
+        const WindowBody = Window.querySelector(".window-body")
+        WindowBody.style.height = "calc(100% - 27.5px)"
+        WindowBody.style.width = "calc(100% - 6px)"
+        WindowBody.style.marginLeft = "3px"
+        const StatueBar = document.createElement("div")
+        StatueBar.style.position = "absolute"
+        StatueBar.style.top = "28px"
+        StatueBar.style.width = "calc(100% - 6px)"
+        StatueBar.style.height = "20px"
+        WindowBody.appendChild(StatueBar)
+        const textarea = document.createElement("textarea")
+        textarea.style.width = "100%"
+        textarea.style.height = "calc(100% - 20px)"
+        textarea.style.backgroundColor = "white"
+        textarea.style.marginTop = "10px"
+        textarea.style.borderStyle = "inset"
+        textarea.style.resize = "none"
+        textarea.style.fontSize = "15px"
+        WindowBody.appendChild(textarea)
+        const filename = document.createElement("input")
+        filename.type = "text"
+        filename.style.width = "100px"
+        filename.style.height = "calc(100% - 1px)"
+        filename.value = Name
+        StatueBar.appendChild(filename)
+        const NewFileButton = document.createElement("button")
+        NewFileButton.style.minHeight = "calc(100% - 2px)"
+        NewFileButton.innerHTML = "New file"
+        NewFileButton.onclick = function(){
+            function clearFile() {
+                Name="NewFile.txt"
+                textarea.value=""
+                filename.value=Name
+                Content=textarea.value
+            }
+            if (textarea.value == "") {
+                clearFile()
+            } else {
+                $MessageBox({Type:4, Msg:"Do you wanna save the data of your file?", Button3:"Yes", Button1:"No", Button2:"Cancel", OnButton3:()=>{SaveFileButton.click(); clearFile()},OnButton1:()=>{clearFile()},Focus:0})
+            }
+        }
+        const OpenFileButton = document.createElement("button")
+        OpenFileButton.style.width = "30px"
+        OpenFileButton.style.minHeight = "calc(100% - 2px)"
+        OpenFileButton.innerHTML = "Open file"
+        OpenFileButton.onclick = function(){
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.click();
+            var Wait = setInterval(() => {
+                if (input.files[0]) {
+                    const Reader = new FileReader()
+                    Reader.onload =(ev)=>{
+                        textarea.value = ev.target.result
+                    }
+                    Reader.readAsText(input.files[0])
+                    Name = input.files[0].name
+                    filename.value = Name
+                    Content = textarea.value
+                    clearInterval(Wait)
+                    return
+                }
+            }, 10);
+        }
+        const SaveFileButton = document.createElement("button")
+        SaveFileButton.style.width = "50px"
+        SaveFileButton.style.minHeight = "calc(100% - 2px)"
+        SaveFileButton.innerHTML = "Save file"
+        SaveFileButton.onclick = function(){
+            Content = textarea.value
+            File = new Blob([Content])
+            Name = filename.value
+            $Download(File, Name)
+        }
+        StatueBar.appendChild(NewFileButton)
+        StatueBar.appendChild(OpenFileButton)
+        StatueBar.appendChild(SaveFileButton)
+        AddElementToBody(Window)
+        textarea.innerText = Content 
+}
+
 function Execute(Program){
     if (Program == "CloseAllWindows") {
         CreateWindow("350px", "CloseAllWindowsWindow", "Close all windows", true, false, false, false, "Are you shure?", "question", false, false, "Yes", 10, "No", 1, null, 1,true)
@@ -676,164 +876,10 @@ async function $TaskKill(Program){   // Remove every program (basically element)
     }
 }       // Be carefull this can count to the desktop icons and start menu too!
 
-// Create a window
-function CreateWindow(Width, Id, Title, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, BodyText, MessageIcon, MarginLeft, MarginTop, Button1, Button1Function, Button2, Button2Function, Button3, Button3Function, $PlaySound) {
+// Generates a window object (that can be customized)
+function $MakeWindow({Width = 'auto', Height = 'auto', Id = null, Class = null, Title = "Window", CloseButton = true, MinimizeButton = true, MaximizeButton = true, HelpButton = false, Draggable = true, Resizable = true, Left = 50, Top = 50, OnClose = null, Url = null, innerHTML = null, DisableClose = false, DisableMaximize = false, Return = false}) {    //, Left = document.body.getBoundingClientRect().width+"px", Top = document.body.getBoundingClientRect().height+"px",
     const RWindow = document.createElement("div") // Window Tab
-    RWindow.className = 'window centerxy'
-    RWindow.style.width = Width
-    RWindow.id = Id
-    RWindow.style.position = "absolute"         
-    if (MarginTop !== false || MarginTop !== null) {
-        RWindow.style.marginTop=MarginTop;            
-    }
-    if (MarginLeft !== false || MarginLeft !== null) {
-        RWindow.style.marginLeft=MarginLeft;            
-    }      
-    const RWindowTitleBar = document.createElement("div") // Window Title
-    RWindowTitleBar.className = "title-bar"
-    RWindow.appendChild(RWindowTitleBar)
-    const RWindowTitleText = document.createElement("div")
-    RWindowTitleText.insertAdjacentText("afterbegin", Title)
-    RWindowTitleText.className = "title-bar-text"
-    RWindowTitleBar.appendChild(RWindowTitleText)
-    const RWindowTitleControls = document.createElement("div")
-    RWindowTitleControls.className = "title-bar-controls"
-    RWindowTitleBar.appendChild(RWindowTitleControls)
-    if (HasHelpButton == true) {
-        const RWindowHelpButton = document.createElement("button")
-        RWindowHelpButton.ariaLabel = "Help"
-        RWindowTitleControls.appendChild(RWindowHelpButton)
-    }
-    if (HasMinimizeButton == true) {
-        const RWindowMinimizeButton = document.createElement("button")
-        RWindowMinimizeButton.ariaLabel = "Minimize"
-        RWindowTitleControls.appendChild(RWindowMinimizeButton)
-    }
-    if (HasMaximizeButton == true) {
-        const RWindowMaximizeButton = document.createElement("button")
-        RWindowMaximizeButton.ariaLabel = "Maximize"
-        RWindowTitleControls.appendChild(RWindowMaximizeButton)
-    }
-    if (HasCloseButton == true) {
-        const RWindowCloseButton = document.createElement("button")
-        RWindowCloseButton.ariaLabel = "Close"
-        RWindowTitleControls.appendChild(RWindowCloseButton)
-        RWindowCloseButton.onclick = function(){RWindow.remove()}
-    }
-    const RWindowBody = document.createElement("div")
-    RWindowBody.className = "window-body"
-    RWindow.appendChild(RWindowBody)
-    if (MessageIcon !== null) {
-        const RWindowBodyIcon = document.createElement("img")
-        RWindowBodyIcon.style.float = "left"
-        RWindowBodyIcon.draggable = false
-        if (MessageIcon === "error") {
-            RWindowBodyIcon.src = "C/System33/Icons/WinRedkyExclusif/error.png"
-            RWindowBodyIcon.alt = "Error"
-            console.error(BodyText);
-        }
-        if (MessageIcon === "information") {
-            RWindowBodyIcon.src = "C/System33/Icons/WinRedkyExclusif/info.png"
-            RWindowBodyIcon.alt = "Information"
-            console.log(BodyText)
-        }
-        if (MessageIcon === "question") {
-            RWindowBodyIcon.src = "C/System33/Icons/WinRedkyExclusif/question.png"
-            RWindowBodyIcon.alt = "Question"
-            console.log(BodyText)
-        }
-        if (MessageIcon === "warning") {
-            RWindowBodyIcon.src = "C/System33/Icons/WinRedkyExclusif/warning.png"
-            RWindowBodyIcon.alt = "Warning"
-            console.warn(BodyText)
-        }
-        
-        RWindowBody.appendChild(RWindowBodyIcon)
-    }
-    const RWindowBodyText = document.createElement("p")
-    RWindowBodyText.textContent = BodyText
-    RWindowBody.appendChild(RWindowBodyText)
-    if (Button3 !== null) {
-        const RWindowBodyButton3 = document.createElement("button")
-        RWindowBodyButton3.textContent = Button3
-        if (Button2 !== null) {
-            RWindowBodyButton3.style.marginLeft = "5%"
-        } else {
-            RWindowBodyButton3.style.marginLeft = "10%"
-        }
-        if (Button3Function === 1) {
-            RWindowBodyButton3.onclick = function(){RWindow.remove()}
-        } else if (Button3Function === 10) {
-            RWindowBodyButton3.onclick = function(){RWindow.remove()
-                const windows = document.querySelectorAll('.window')
-                windows.forEach(window => {
-                    window.remove()
-                })}
-            
-        }
-
-        RWindowBody.appendChild(RWindowBodyButton3)
-    }
-    if (Button1 !== null) {
-        const RWindowBodyButton1 = document.createElement("button")
-        RWindowBodyButton1.textContent = Button1
-        if (Button3 !== null) {
-            RWindowBodyButton1.style.marginLeft = "5%"
-        } else {
-            RWindowBodyButton1.style.marginLeft = "25%"
-        }
-        if (Button1Function === 1) {
-            RWindowBodyButton1.onclick = function(){RWindow.remove()}
-        } else if (Button1Function === 10) {
-            RWindowBodyButton1.onclick = function(){RWindow.remove()
-                const windows = document.querySelectorAll('.window')
-                windows.forEach(window => {
-                    window.remove()
-                })}
-            
-        }
-
-        RWindowBody.appendChild(RWindowBodyButton1)
-    }
-    if (Button2 !== null) {
-        const RWindowBodyButton2 = document.createElement("button")
-        RWindowBodyButton2.textContent = Button2
-        RWindowBodyButton2.style.marginLeft = "5%"
-        if (Button2Function === 1) {
-            RWindowBodyButton2.onclick = function(){RWindow.remove()}
-        } else if (Button2Function === 10) {
-            RWindowBodyButton2.onclick = function(){RWindow.remove()
-                const windows = document.querySelectorAll('.window')
-                windows.forEach(window => {
-                    window.remove()
-                })}
-            
-        }
-
-        RWindowBody.appendChild(RWindowBodyButton2)
-    }
-    //dragElement(RWindow)
-    document.body.appendChild(RWindow)
-    if ($PlaySound === true) {
-        if (MessageIcon == "error") {
-            var sound = document.getElementById("CriticalError").cloneNode(true)
-            sound.play();
-        } else if (MessageIcon == "information") {
-            var sound = document.getElementById("Exclamation").cloneNode(true)
-            sound.play();
-        } else if (MessageIcon == "question") {
-            var sound = document.getElementById("Exclamation").cloneNode(true)
-            sound.play();
-        } else if (MessageIcon == "warning") {
-            var sound = document.getElementById("Error").cloneNode(true)
-            sound.play();
-        }
-    }
-}
-
-function $MakeWindow({Width = 'auto', Height = 'auto', Id = null, Class = null, Title = "Window", HasCloseButton = true, HasMinimizeButton = true, HasMaximizeButton = true, HasHelpButton = false, Draggable = true, Resizable = true, Left = 'calc(50% - 10px)', Top = '50%', Onclose = null}) {
-    const RWindow = document.createElement("div") // Window Tab
-    RWindow.className = 'window centerxy'
+    RWindow.className = 'window'
     RWindow.style.width = Width
     RWindow.style.height = Height
     if (!NoCheck(Id)) {
@@ -842,19 +888,14 @@ function $MakeWindow({Width = 'auto', Height = 'auto', Id = null, Class = null, 
     if (!NoCheck(Id)) {
         RWindow.className = RWindow.className + " "  + Class
     }
-    RWindow.style.position = "absolute" 
+    RWindow.style.position = "absolute"
+    RWindow.style.margin = "auto"
     if (Draggable !== false && Draggable == null) {
         RWindow.className = RWindow.className + " drag"           
     }
     if (Resizable !== false && Resizable == null) {
         RWindow.className = RWindow.className + " resize"           
     }
-    if (Left !== false || Left !== null) {
-        RWindow.style.left=Left;            
-    }
-    if (Top !== false || Top !== null) {
-        RWindow.style.top=Top;            
-    }      
     const RWindowTitleBar = document.createElement("div") // Window Title
     RWindowTitleBar.className = "title-bar"
     RWindow.appendChild(RWindowTitleBar)
@@ -865,77 +906,97 @@ function $MakeWindow({Width = 'auto', Height = 'auto', Id = null, Class = null, 
     const RWindowTitleControls = document.createElement("div")
     RWindowTitleControls.className = "title-bar-controls"
     RWindowTitleBar.appendChild(RWindowTitleControls)
-    if (HasHelpButton == true) {
+    if (HelpButton) {
         const RWindowHelpButton = document.createElement("button")
         RWindowHelpButton.ariaLabel = "Help"
         RWindowTitleControls.appendChild(RWindowHelpButton)
+        if (HelpButton) {
+            RWindowHelpButton.onclick = async function() {
+                $MessageBox({Type:1,Msg:HelpButton,Sound:null})
+            }
+        }
     }
-    if (HasMinimizeButton == true || HasCloseButton == null) {
+    if (MinimizeButton == true || CloseButton == null) {
         const RWindowMinimizeButton = document.createElement("button")
         RWindowMinimizeButton.ariaLabel = "Minimize"
         RWindowTitleControls.appendChild(RWindowMinimizeButton)
     }
-    if (HasMaximizeButton == true || HasCloseButton == null) {
+    if (MaximizeButton == true || CloseButton == null) {
         const RWindowMaximizeButton = document.createElement("button")
         RWindowMaximizeButton.ariaLabel = "Maximize"
         RWindowTitleControls.appendChild(RWindowMaximizeButton)
-        var WinX1 = Width
-        var WinY1 = Height
-        if (Left !== null) {
-            var WinX2 = Left;            
+        if (DisableMaximize) {
+            //RWindowMaximizeButton.classList.add("disable")
+            RWindowMaximizeButton.disabled = true
         } else {
-            WinX2 = "50%"
-        }
-        if (Top !== null) {
-            var WinY2 = Top;            
-        } else {
-            WinY2 = "50%"
-        }
-        var WinF = false
-        RWindowMaximizeButton.onclick = async function() {
-            if (WinF == false) {
-                WinF = true
-                WinX1 = RWindow.style.width
-                WinY1 = RWindow.style.height
-                WinX2 = RWindow.style.left
-                WinY2 = RWindow.style.top
-                if (Draggable == true) {
-                    $( RWindow ).draggable("disable")
-                }
-                if (Resizable == true) {
-                    $( RWindow ).resizable("disable")
-                }
-                RWindow.style.width = "100%"
-                RWindow.style.height = "calc(100% - 35px)"
-                RWindow.style.left = "50px"
-                RWindow.style.top = "47.5px"
+            var WinX1 = Width
+            var WinY1 = Height
+            if (Left !== null) {
+                var WinX2 = Left;            
             } else {
-                WinF = false
-                if (Draggable == true) {
-                    $( RWindow ).draggable("enable")
+                WinX2 = "0"
+            }
+            if (Top !== null) {
+                var WinY2 = Top;            
+            } else {
+                WinY2 = "0"
+            }
+            var WinF = false
+            RWindowMaximizeButton.onclick = async function() {
+                if (WinF == false) {
+                    WinF = true
+                    WinX1 = RWindow.style.width
+                    WinY1 = RWindow.style.height
+                    WinX2 = RWindow.style.left
+                    WinY2 = RWindow.style.top
+                    if (Draggable == true) {
+                        $( RWindow ).draggable("disable")
+                    }
+                    if (Resizable == true) {
+                        $( RWindow ).resizable("disable")
+                    }
+                    RWindow.style.width = "100%"
+                    RWindow.style.height = "calc(100% - 35px)"
+                    RWindow.style.left = 0
+                    RWindow.style.top = 0
+                } else {
+                    WinF = false
+                    if (Draggable == true) {
+                        $( RWindow ).draggable("enable")
+                    }
+                    if (Resizable == true) {
+                        $( RWindow ).resizable("enable")
+                    }
+                    RWindow.style.width = WinX1
+                    RWindow.style.height = WinY1
+                    RWindow.style.left = WinX2
+                    RWindow.style.top = WinY2
                 }
-                if (Resizable == true) {
-                    $( RWindow ).resizable("enable")
-                }
-                RWindow.style.width = WinX1
-                RWindow.style.height = WinY1
-                RWindow.style.left = WinX2
-                RWindow.style.top = WinY2
             }
         }
     }
-    if (HasCloseButton == true || HasCloseButton == null) {
+    if (CloseButton == true || CloseButton == null) {
         const RWindowCloseButton = document.createElement("button")
         RWindowCloseButton.ariaLabel = "Close"
         RWindowTitleControls.appendChild(RWindowCloseButton)
-        if (!NoCheck(Onclose)) {
-            RWindowCloseButton.onclick = function(){Onclose(RWindow)}
+        if (DisableClose) {
+            RWindowCloseButton.classList.add("disable")
+        } else {
+        if (!NoCheck(OnClose)) {
+            RWindowCloseButton.onclick = function(){OnClose(RWindow); RWindow.remove()}
         } else {
         RWindowCloseButton.onclick = function(){RWindow.remove()}}
+        }
     }
     const RWindowBody = document.createElement("div")
     RWindowBody.className = "window-body"
     RWindow.appendChild(RWindowBody)
+    if (!NoCheck(innerHTML)) {
+        RWindowBody.innerHTML = innerHTML
+    } else
+    if (!NoCheck(Url)) {
+        // W.I.P.
+    }
     if (Draggable === true) {
         $( RWindow ).draggable({
             scroll: false,
@@ -952,21 +1013,31 @@ function $MakeWindow({Width = 'auto', Height = 'auto', Id = null, Class = null, 
           });
     }
     AddElementToBody(RWindow)
-    return RWindow
+    if (Left !== false || Left !== null) {
+        // console.log(RWindow.offsetWidth)
+        RWindow.style.left="calc("+Left+"% - "+(RWindow.offsetWidth/2)+"px)"
+    }
+    if (Top !== false || Top !== null) {
+        // console.log(RWindow.offsetHeight)
+        RWindow.style.top="calc("+Top+"% - "+(RWindow.offsetHeight/2)+"px)"
+    }
+    if (Return) {
+        return RWindow
+    }
 }
 
 ///New $Notify Function
 function $Notify({Msg = null, Title = null, Length = 5000}) {
     const ballon = document.createElement("div") // Ballon tip
     ballon.className = "notif-bubble"
-    if (!NullCheck(Title)) {
-        const TitleT = document.createElement("p") // Title
-        TitleT.innerHTML = Title.toString()
-        TitleT.style.marginLeft = "10px"
-        TitleT.style.padding  = "5px 0px 1px 0px"
-        TitleT.style.fontWeight = "bold"
-        ballon.appendChild(TitleT)
-    }
+    ballon.style.minHeight = "45px"
+    const TitleT = document.createElement("p") // Title
+    if (!NullCheck(Title)) { TitleT.innerHTML = Title.toString() }
+    TitleT.style.marginLeft = "10px"
+    TitleT.style.padding  = "5px 0px 1px 0px"
+    TitleT.style.fontWeight = "bold"
+    TitleT.style.minHeight = "19px"
+    ballon.appendChild(TitleT)
     const ballonX = document.createElement("span") // Close button
     ballonX.innerText = "×"
     ballonX.className = "notif-bubble-close"
@@ -990,7 +1061,7 @@ function $Notify({Msg = null, Title = null, Length = 5000}) {
     ballonTO.className = "notif-bubble-bottom-outline"
     ballonT.appendChild(ballonTO)
     document.body.querySelector(".Notifications").appendChild(ballon)
-    $PlaySound("Ballon")
+    $Audio("ballon").play()
     debounce = true
     ballonX.onclick = async function(){
         if (debounce) {
@@ -1030,19 +1101,21 @@ function $Notify({Msg = null, Title = null, Length = 5000}) {
 }
 
 ///New $MessageBox Function
-function $MessageBox({Type = 1, Msg = null, title = null, Icon = null, Sound = "auto", helpbutton = false, left = "50%", top = "50%", ShowsMsg = true, OnOk = null, OnOkClose = null, OnClose = null}) {
-    var Window = $MakeWindow({Width: '250px', Height: 'auto', Title: title, HasMinimizeButton: false, HasMaximizeButton: false, HasHelpButton: helpbutton, Draggable: true, Resizable: false, Left: left, Top: top, Onclose: OnClose})
+function $MessageBox({Type, Msg, Title = null, Icon = null, Sound = "auto", Left = 50, Top = 50, ShowsMsg = true, Button1 = "Ok", Button2 = null, Button3 = null, OnButton1 = null, OnButton2 = null, OnButton3 = null, Help = null, OnX = null, OnClose = null, Focus = 1, Return = false}) {
+    if (Help) {helpbutton = true} else {helpbutton = null}
+    var Window = $MakeWindow({Width: 'auto', Height: 'auto', Title: Title, MinimizeButton: false, MaximizeButton: false, HelpButton: helpbutton, Draggable: true, Resizable: false, Left: Left, Top: Top, OnClose: OnX||OnClose, Return:true})
     Window.style.removeProperty("height") // Make the thing weird if to many text
-    if (Type === 1 && title === null) {
+    Window.style.minWidth = "150px"
+    if (Type === 1 && Title === null) {
         Window.querySelector(".title-bar-text").innerHTML = "Message"
-    } else {Window.querySelector(".title-bar-text").innerHTML = title}
-    if (Type === 2 && title === null) {
+    } else {Window.querySelector(".title-bar-text").innerHTML = Title}
+    if (Type === 2 && Title === null) {
         Window.querySelector(".title-bar-text").innerHTML = "Information"
     }
-    if (Type === 3 && title === null) {
+    if (Type === 3 && Title === null) {
         Window.querySelector(".title-bar-text").innerHTML = "Error"
     }
-    if (Type === 4 && title === null) {
+    if (Type === 4 && Title === null) {
         Window.querySelector(".title-bar-text").innerHTML = "Warning"
     }
     const WindowIcon = document.createElement("img")
@@ -1051,22 +1124,22 @@ function $MessageBox({Type = 1, Msg = null, title = null, Icon = null, Sound = "
     WindowIcon.style.width = "34px"
     if (Icon == 'auto' || Icon !== undefined) {
         if (Type === 1) {
-            WindowIcon.src = "C/System33/Icons/WinRedkyExclusif/info.png"
+            WindowIcon.src = "C/System33/Icons/System/info.png"
             WindowIcon.alt = "Information"
             //console.log(Msg);
         }
         if (Type === 2) {
-            WindowIcon.src = "C/System33/Icons/WinRedkyExclusif/question.png"
+            WindowIcon.src = "C/System33/Icons/System/question.png"
             WindowIcon.alt = "Question"
             //console.log(Msg);
         }
         if (Type === 3) {
-            WindowIcon.src = "C/System33/Icons/WinRedkyExclusif/error.png"
+            WindowIcon.src = "C/System33/Icons/System/error.png"
             WindowIcon.alt = "Error"
             if(ShowsMsg === true) {console.error(Msg);}
         }
         if (Type === 4) {
-            WindowIcon.src = "C/System33/Icons/WinRedkyExclusif/warning.png"
+            WindowIcon.src = "C/System33/Icons/System/warning.png"
             WindowIcon.alt = "Warning"
             if(ShowsMsg === true) {console.warn(Msg);}
         }
@@ -1080,26 +1153,60 @@ function $MessageBox({Type = 1, Msg = null, title = null, Icon = null, Sound = "
     CentralText.style.fontSize = "10.75px"
     CentralText.style.textAlign = "center"
     Window.querySelector(".window-body").appendChild(CentralText)
-    const WindowButton = document.createElement("button")
-    WindowButton.textContent = "OK"
-    WindowButton.className = "centerx"
-    WindowButton.onclick = function(){
-        if (!NullCheck(OnOk)) {
-            OnOk(Window)
-        } else
-        if (!NullCheck(OnOkClose)) {
-            OnOkClose(Window)
+    const WindowButtonSection = document.createElement("section")
+    WindowButtonSection.className = "field-row"
+    WindowButtonSection.style.justifyContent = "center"
+    if (Button3 != null) {
+        const WindowButton3 = document.createElement("button")
+        WindowButton3.textContent = Button3
+        WindowButton3.setAttribute('num', 3)
+        WindowButton3.onclick = function(){
+            if (!NullCheck(OnButton3)) {
+                OnButton3(Window)
+                Window.remove()
+            } else
+            if (!NullCheck(OnClose)) {
+                OnClose(Window)
+                Window.remove()
+            } else {Window.remove()}
+        }
+        WindowButtonSection.appendChild(WindowButton3)
+    }
+    const WindowButton1 = document.createElement("button")
+    WindowButton1.textContent = Button1
+    WindowButton1.setAttribute('num', 1)
+    WindowButton1.onclick = function(){
+        if (!NullCheck(OnButton1)) {
+            OnButton1(Window)
             Window.remove()
         } else
         if (!NullCheck(OnClose)) {
             OnClose(Window)
             Window.remove()
-        } else Window.remove()
+        } else {Window.remove()}
     }
+    WindowButtonSection.appendChild(WindowButton1)
+    if (Button2 != null) {
+        const WindowButton2 = document.createElement("button")
+        WindowButton2.textContent = Button2
+        WindowButton2.setAttribute('num', 2)
+        WindowButton2.onclick = function(){
+            if (!NullCheck(OnButton2)) {
+                OnButton2(Window)
+                Window.remove()
+            } else
+            if (!NullCheck(OnClose)) {
+                OnClose(Window)
+                Window.remove()
+            } else {Window.remove()}
+        }
+        WindowButtonSection.appendChild(WindowButton2)
+    }
+    
     //Window.querySelector("[aria-label=\"Close\"]").removeAttribute("onclick");
     Window.querySelector("[aria-label=\"Close\"]").onclick = function(){
-        if (!NullCheck(OnOkClose)) {
-            OnOkClose(Window)
+        if (!NullCheck(OnX)) {
+            OnX(Window)
             Window.remove()
         } else
         if (!NullCheck(OnClose)) {
@@ -1107,90 +1214,38 @@ function $MessageBox({Type = 1, Msg = null, title = null, Icon = null, Sound = "
             Window.remove()
         } else Window.remove()
     }
-    Window.querySelector(".window-body").appendChild(WindowButton)
+    Window.querySelector(".window-body").appendChild(WindowButtonSection)
     document.body.appendChild(Window)
     if (Sound == "auto" || Sound === undefined) {
         if (Type == 1) {
-            $PlaySound("Exclamation")
+            $Audio("exclamation").play()
          } else if (Type == 2) {
-             $PlaySound("Ding")
+             $Audio("ding").play()
          } else if (Type == 3) {
-             $PlaySound("CriticalError")
+             $Audio("criticalError").play()
          } else if (Type == 4) {
-             $PlaySound("Error")
+             $Audio("error").play()
          }
     } else {
         if (Sound !== null) {
-            $PlaySound(Sound)
+            $Audio(Sound).play()
         }
         
     }
-
+    if (Help) {Window.querySelector("[aria-label=\"Help\"]").onclick = Help}
     document.body.appendChild(Window)
-    return Window
-}
-
-// Create IFrame Window
-function CreateIFrameWindow(Width, Height, Title, Id, HasCloseButton, HasMinimizeButton, HasMaximizeButton, HasHelpButton, IFrame, MarginLeft, MarginTop) {
-    const RWindow = document.createElement("div") // Window Tab
-    RWindow.className = 'window'
-    RWindow.style.width = Width
-    RWindow.style.height = Height
-    RWindow.id = Id
-    RWindow.style.position = "absolute"         
-    if (MarginTop !== false || MarginTop !== null) {
-        RWindow.style.marginTop=MarginTop;            
+    if(Focus >= 1 && Focus <= 3){
+        var Button = Window.querySelector('[num="'+Focus+'"]')
+        Button.focus()
+        Window.querySelector(".window-body").onclick = () => {Button.focus()}
     }
-    if (MarginLeft !== false || MarginLeft !== null) {
-        RWindow.style.marginLeft=MarginLeft;            
-    }      
-    const RWindowTitleBar = document.createElement("div") // Window Title
-    RWindowTitleBar.className = "title-bar"
-    RWindow.appendChild(RWindowTitleBar)
-    const RWindowTitleText = document.createElement("div")
-    RWindowTitleText.insertAdjacentText("afterbegin", Title)
-    RWindowTitleText.className = "title-bar-text"
-    RWindowTitleBar.appendChild(RWindowTitleText)
-    const RWindowTitleControls = document.createElement("div")
-    RWindowTitleControls.className = "title-bar-controls"
-    RWindowTitleBar.appendChild(RWindowTitleControls)
-    if (HasHelpButton == true) {
-        const RWindowHelpButton = document.createElement("button")
-        RWindowHelpButton.ariaLabel = "Help"
-        RWindowTitleControls.appendChild(RWindowHelpButton)
+    if (Return) {
+        return Window
     }
-    if (HasMinimizeButton == true) {
-        const RWindowMinimizeButton = document.createElement("button")
-        RWindowMinimizeButton.ariaLabel = "Minimize"
-        RWindowTitleControls.appendChild(RWindowMinimizeButton)
-    }
-    if (HasMaximizeButton == true) {
-        const RWindowMaximizeButton = document.createElement("button")
-        RWindowMaximizeButton.ariaLabel = "Maximize"
-        RWindowTitleControls.appendChild(RWindowMaximizeButton)
-    }
-    if (HasCloseButton == true) {
-        const RWindowCloseButton = document.createElement("button")
-        RWindowCloseButton.ariaLabel = "Close"
-        RWindowTitleControls.appendChild(RWindowCloseButton)
-        RWindowCloseButton.onclick = function(){RWindow.remove()}
-    }
-    const RWindowBody = document.createElement("div")
-    RWindowBody.className = "window-body"
-    RWindowBody.style.height = "85%"
-    RWindow.appendChild(RWindowBody)
-    const RWindowBodyIFrame = document.createElement("iframe")
-    RWindowBody.appendChild(RWindowBodyIFrame)
-    //dragElement(RWindow)
-    document.body.appendChild(RWindow)
-    RWindowBodyIFrame.src = IFrame
-    RWindowBodyIFrame.height = "100%"
-    RWindowBodyIFrame.width = "100%"
-
 }
 
 // Create shortcut
-function $Shortcut(Name, Image, Left, Top, Function) {
+function $Shortcut(Name, Image, Left, Top, Function, Disable = false) {
     const shortcut = document.createElement("div")
     const name = Name
     shortcut.id = "appicon"
@@ -1229,15 +1284,13 @@ function $Shortcut(Name, Image, Left, Top, Function) {
     // Hardest part
     if (!NoCheck(Function)) {
         if (typeof Function === "function") {
-            var anyString = '';
-            console.log(Function)
-            var aFunction = Function;
-            var functionText = anyString + aFunction;
+            var functionText = function(){
+                return Function.toString()
+            }();
             var shortcut2 = Name
-            console.log(functionText);
             scriptt = document.createElement("script")
             scriptt.text = `
-            $('div[name="`+shortcut2+`"]')
+            $("."+document.currentScript.parentNode.className[0])
             .dblclick(function(shortcut){
                 f = `+functionText+`
                 f()
@@ -1249,10 +1302,172 @@ function $Shortcut(Name, Image, Left, Top, Function) {
             shortcut.appendChild(scriptt)
         }
     }
-    document.querySelector(".Desktop").querySelector("#shortcuts").appendChild(shortcut)
+    if (!Disable) {
+        document.querySelector(".Desktop").querySelector("#shortcuts").appendChild(shortcut)
+    }
     return shortcut
 }
 
+function $Prompt(Text, Callback, Help = null) {
+    const Prompt = $MakeWindow({Width: '300px', Height: '100px', Title: "Prompt", MinimizeButton: false, MaximizeButton: false, HelpButton: Help, Draggable: true, Resizable: false, Return: true})
+    const WindowButtonSection = document.createElement("section")
+    WindowButtonSection.className = "field-row"
+    WindowButtonSection.style = `text-align: justify; /* For Edge */
+    -moz-text-align-last: center; /* For Firefox prior 58.0 */
+    text-align-last: center;`
+    const WindowButton2 = document.createElement("button")
+    WindowButton2.textContent = "Cancel"
+    WindowButton2.onclick = function(){
+        Prompt.remove()
+    }
+    const PromptBox = document.createElement("input")
+    const WindowButton1 = document.createElement("button")
+    WindowButton1.textContent = "OK"
+    WindowButton1.onclick = function(){
+        Prompt.remove(); if (PromptBox.value.length > 0) {
+        Callback(PromptBox.value) }
+    }
+    WindowButtonSection.appendChild(PromptBox)
+    WindowButtonSection.appendChild(document.createElement("br"))
+    WindowButtonSection.appendChild(WindowButton2)
+    WindowButtonSection.appendChild(WindowButton1)
+    Prompt.querySelector(".window-body").appendChild(WindowButtonSection)
+}
+
+function $ResetData() { // Dangerous Function
+    var MsgBox = $MessageBox({Type:4,Title:"Warning",Msg:"Are you shure you want to erase all of your data? <br> This data will not be recover again.",ShowsMsg:false,Button1:"Yes",Button2:"No",Focus:2,OnButton1:()=>{
+        clearInterval(DesktopStorage)
+        localStorage.clear()
+        $Reboot()
+    }})
+}
+
+// var afterBoot = setInterval(() => {
+//     if (Booted) {
+//         const Apps = {
+//             "Credits.txt": $Shortcut("Credits.txt", "C/System33/Icons/System/text-file.png", "0xp", "0xp", () => {$Exe("1")}, true)
+//         }
+//         function $InsertApp(Name) {
+//             if (!document.querySelector("#shortcuts").querySelector("#"+Name)) {
+//                 document.querySelector(".Desktop").querySelector("#shortcuts").appendChild(Apps[Name])
+//             }
+//         }
+    
+//         $InsertApp("Credits.txt")
+//         clearInterval(afterBoot)
+//     }
+// }, 10);
+
+{
+   async function contextMenu() {   // Context Menu (Coming soon...)
+    const ContextMenu = document.createRange().createContextualFragment(`<div id="shortcutcontextMenu" class="shortcutcontext-menu"style="display:none">
+                            <style type="text/css">
+                                .shortcutcontext-menu {
+                                    position: absolute;
+                                    text-align: center;
+                                    background: white;
+                                    border: 1px solid black;
+                                    z-index: 100;
+                                }
+
+                                .shortcutcontext-menu ul {
+                                    padding: 0px;
+                                    margin: 0px;
+                                    min-width: 150px;
+                                    list-style: none;
+                                }
+
+                                .shortcutcontext-menu ul li {
+                                    padding-bottom: 7px;
+                                    padding-top: 7px;
+                                    border-bottom: 1px solid;
+                                }
+
+                                .shortcutcontext-menu ul li:last-child {
+                                    border-bottom: none
+                                }
+
+                                .shortcutcontext-menu ul li a {
+                                    text-decoration: none;
+                                    color: black;
+                                }
+
+                                .shortcutcontext-menu ul li:hover {
+                                    background: white;
+                                }
+                            </style>
+                            <ul link>
+                                <li id="newShortcut"><a>Create Shortcut</a></li>
+                            </ul>
+                        </div>`).querySelector("div")
+    while (!document.querySelector(".Desktop")) await sleep(10)
+    document.querySelector(".Desktop").addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        document.onclick = () => {ContextMenu.style.display = 'none'};
+        document.oncontextmenu = () => {ContextMenu.style.display = 'block';
+        ContextMenu.style.left = e.pageX + "px";
+        ContextMenu.style.top = e.pageY + "px";};
+    })
+    document.body.appendChild(ContextMenu)
+    ContextMenu.querySelector("#newShortcut").onclick = () => {
+        const Name = prompt("Shortcut Name (Important")
+        const Image = prompt("Shortcut Image")
+        const Function = prompt("Shortcut Function")
+        const Program = `$Shortcut("`+Name+`","`+Image+`","50%","50%",(() => {
+            `+Function+`
+          }));`
+        eval(Program)
+    }
+}
+contextMenu()
+};
+
+// Kernel
+const $Kernel = {
+    System33: {        // System33 Functions (moved here in 1.0.5)
+        newForm: $MakeWindow,
+        msgBox: $MessageBox,
+        newNotif: $Notify,
+        run: $Exe,
+        newFile: $File,
+        audios: {
+            "main": 'C/System33/Sounds/',
+            "criticalError": new Audio('C/System33/Sounds/criticalerror.wav'),
+            "error": new Audio('C/System33/Sounds/error.wav'),
+            "exclamation": new Audio('C/System33/Sounds/exclamation.wav'),
+            "startup": new Audio('C/System33/Sounds/betastartup.wav'),      //Currently in Beta
+            "shutdown": new Audio('C/System33/Sounds/betashutdown.wav'),        //Currently in Beta
+            "ballon": new Audio('C/System33/Sounds/ballon.wav'),
+            "ding1": new Audio('C/System33/Sounds/ding1.wav'),
+            "ding2": new Audio('C/System33/Sounds/ding2.wav'),
+            "reversedCritital": new Audio('C/System33/Sounds/reversedcritital.wav'),
+            "classicerror": new Audio('C/System33/Sounds/classicerror.mp3'),        //The only MP3 (for now)
+        }
+    },
+    softcode: {        // System/Apps Functions
+        apps: {}
+    },
+    hardcode: {        // Advanced Functions
+        toggleFullscreen: $Fullscreen,
+        crash: (code)=>{ "Crash the website with 'on-purpose muted sounds' and return stopcode as a search url (RSOD Coming soon)";
+            "use strict"
+            if (!code) {code = "UNIDENTIFIED_INTENTIONAL_CRASH"}
+            //var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?stopCode='+code.toString()+'';
+            //window.history.pushState({path:newurl},'',newurl);
+            var noise = new Audio('C/System33/Sounds/alphacrash.wav')
+            noise.volume = 0.75
+            noise.play()
+            function muteMe(elem) {elem.muted = false;elem.pause();}// Try to mute all video and audio elements on the page
+            function mutePage() {
+                var elems = document.querySelectorAll("video, audio");
+
+                [].forEach.call(elems, function(elem) { muteMe(elem); });
+            }
+            mutePage()
+            eval("[...Array(2**32-1)]")
+        }
+    }
+}
 
 // Finish
 
