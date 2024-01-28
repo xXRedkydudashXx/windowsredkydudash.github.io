@@ -1,7 +1,7 @@
 // console.log("Hello World!")
 // import settings from './example.json' assert {type: 'json'};
 // console.log(settings);
-CurrVersion = "Pre-Alpha 1.0.4"
+CurrVersion = "Pre-Alpha 1.1.4"
 Booted = false
 
 // Functions needed
