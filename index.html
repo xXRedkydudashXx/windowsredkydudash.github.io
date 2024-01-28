@@ -40,41 +40,42 @@
         <meta name="google" content="notranslate" />
 
         <!-- Links -->
-        <link rel="icon" type="image/x-icon" href="C/System33/Images/WinRedky.png">
+        <link rel="icon" type="image/x-icon" href="C/System33/Icons/System/winredmc.png">
         <link rel="stylesheet" href="C/System33/Libraries/styles.css"/>
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> -->
-        <link rel="stylesheet" href="https://unpkg.com/xp.css" />
-        <link rel="stylesheet" href="C/System33/Libraries/windowtheme.css"/>
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> -->  <!-- Important in Local -->
+        <link rel="stylesheet" href="C/System33/Libraries/xp.css" />
         <link rel="stylesheet" href="C/System33/Libraries/jquery-terminal/jquery.terminal-2.34.0.min.css">
-        <!-- <link rel="stylesheet" type="text/css" href="C/System33/Libraries/clippyjs/build/clippy.css" media="all"> -->
+        <link rel="stylesheet" type="text/css" href="C/System33/Libraries/ClippyJS/build/clippy.css" media="all">
         
         <!-- Scripts Link -->
         <script type="text/javascript" src="C/System33/System33.js"></script>
         <!-- <script src="C/System33/Libraries/ruffle/ruffle.js"></script> -->
-        <script src="C/System33/Libraries/jquery-3.6.1.min.js"></script>
+        <script src="C/System33/Libraries/jquery-3.7.0.min.js"></script>
         <script src="C/System33/Libraries/jquery-ui-1.13.2.min.js"></script>
         <script src="C/System33/Libraries/jquery-draggable-touch.js "></script>
         <script src="C/System33/Libraries/jquery-doubletap.js"></script>
         <script src="C/System33/Libraries/jquery.ui.touch-punch.min.js"></script>
-        <!-- <script src="C/System33/Libraries/clippyjs/build/clippy.min.js"></script> -->
+        <script src="C/System33/Libraries/ClippyJS/build/clippy.js"></script>
         <script src="C/System33/Libraries/jquery-terminal/jquery.terminal-2.34.0.min.js"></script>
 
 
     </head>
     <Body class="background1" id ="background">
 
-<div alt="AudioLibrary">
-  <audio src="C/System33/Sounds/critialerror.wav" id="CriticalError">critialerror</audio>
-  <audio src="C/System33/Sounds/error.wav" id="Error">error</audio>
-  <audio src="C/System33/Sounds/exclamation.wav" id="Exclamation">exclamation</audio>
-  <audio src="C/System33/Sounds/betastartup.wav" id="Startup">startup</audio> <!--Currently in Beta-->
-  <audio src="C/System33/Sounds/betashutdown.wav" id="Shutdown">shutdown</audio> <!--Currently in Beta-->
-  <audio src="C/System33/Sounds/ballon.wav" id="Ballon">ballon</audio>
-  <audio src="C/System33/Sounds/reversedcritital.wav" id="ReversedCriticalError">reversedcrititalerror</audio>
-</div>
+<!-- <div alt="AudioLibrary">
+<audio src="C/System33/Sounds/critialerror.wav" id="CriticalError">critialerror</audio>
+<audio src="C/System33/Sounds/error.wav" id="Error">error</audio>
+<audio src="C/System33/Sounds/exclamation.wav" id="Exclamation">exclamation</audio>
+<audio src="C/System33/Sounds/betastartup.wav" id="Startup">startup</audio>
+<audio src="C/System33/Sounds/betashutdown.wav" id="Shutdown">shutdown</audio>
+<audio src="C/System33/Sounds/ballon.wav" id="Ballon">ballon</audio>
+<audio src="C/System33/Sounds/ding1.wav" id="Ding1">ding</audio>
+<audio src="C/System33/Sounds/ding2.wav" id="Ding2">dong</audio>
+<audio src="C/System33/Sounds/reversedcritital.wav" id="ReversedCriticalError">reversedcrititalerror</audio>
+<audio src="C/System33/Sounds/classicerror.mp3" id="ClassicError">classicerror</audio>
+</div> -->
 
 <script>
-window.onload = function(){document.getElementsByClassName('wtversion')[0].innerHTML = "Current Version: "+CurrVersion;
 window.addEventListener('mouseup',function(event){
         var pol = document.getElementById('StartMenu');
         if(event.target != pol && event.target.parentNode != pol){
@@ -94,6 +95,19 @@ setInterval(() => {
 
 timer();
 
+if (!(localStorage.getItem("LocalDesktop") == null)) {
+  const template = document.createElement('template');
+  template.innerHTML = localStorage.LocalDesktop.trim();
+  template.content.childNodes.length;
+  $(".Desktop").children("#shortcuts").empty();
+  setTimeout(() => {
+    for (var i = 0; i < template.content.childNodes.length; i++) {
+      let obj = template.content.childNodes[i].cloneNode(true)
+      $(".Desktop").children("#shortcuts").append(obj);
+    }
+  }, 100);
+}
+
 function timer(){
  var currentTime = new Date()
 var hours = currentTime.getHours()
@@ -111,9 +125,9 @@ if(hours > 11){
 } else {
    t_str +=  ' ' + 'AM';
 }
- document.getElementById('date-time').innerHTML = t_str;
- setTimeout(timer,1000);
- $(document).ready(function() {
+return t_str
+}
+ setInterval(() => {
   $( ".drag" ).draggable({
     scroll: false,
     handle: ".title-bar",
@@ -129,99 +143,123 @@ if(hours > 11){
     zIndex: 10,
     stack: ".shortcut"
     });
-});
-}}
+  if (document.getElementById('date-time')) {
+    document.getElementById('date-time').innerHTML = timer();
+  }
+ },1000);
 
-  
-
-  </script>
+</script>
 <div class="bootscreen" id="bootscreen" style="user-select:none;">
-  <img src="C/System33/Boot/WindowsRedkydudashLogo.png" id="startupscreen1" alt="WinRedkyStartLogo" class="startup noHover" height="45%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(10%);" draggable="false"> <br>
-  <img src="C/System33/Images/System/Progressbar.gif" id="startupscreen2" class="startup2 noHover" height="2%" style="display: block; margin-left: auto; margin-right: auto; margin-top: calc(0%);" draggable="false"> <br>
-  <noscript style="display: block; margin-left: calc(50% - 150px); margin-top: calc(0%);" draggable="false"><pw>Error: Javascript is disabled <br> You need to enable Javascript to run Windows Redkydudash <br> <blink>_</blink></pw></noscript>
-</div>
-
-
-
-
-<div class="window drag resize" style="width: 300px; top: calc(50% - 50px); left: calc(50% - 150px);" id="WelcomeMessage">
-  <div class="title-bar">
-    <div class="title-bar-text">Welcome!</div>
-    <div class="title-bar-controls">
-      <button aria-label="Close" onclick="document.getElementById('WelcomeMessage').style.visibility = 'hidden';"></button>
+  <img src="C/System33/Boot/WindowsRedkydudashLogo.png" id="startupscreen1" alt="WinRedkyStartLogo" class="startup noHover" height="42.5%" draggable="false"> <br>
+  <img src="C/System33/Images/System/Progressbar.gif" id="startupscreen2" class="startup2 noHover" height="2%" draggable="false"> <br>
+  <noscript style="display: block; margin-left: calc(50% - 150px);" draggable="false"><pw>Error: Javascript is disabled <br> You need to enable Javascript to run Windows Redkydudash <br> <blink>_</blink></pw></noscript>
+  <!-- <div>  Debug
+    <dos></dos>
+    <div>
+      <script>
+        document.write((new Date).toString())
+      </script>
     </div>
+  <div>&nbsp;</div>
+    <div>
+    <script>
+      for (var key in window.location) {
+        if (typeof window.location[key] === 'string') {
+          document.write(key + ': ' + window.location[key] + '<br>');
+        }
+      }
+    </script>
   </div>
-  <div class="window-body">
-      <img src="C/System33/Icons/WinRedkyExclusif/info.png" style="float: left;" draggable="false">
-    <p style="margin-left: 55px;">Welcome to Windows Redkydudash!</p>
-    <p style="margin-left: 55px;" class="wtversion"></p>
-    <br>    <!-- ><blink>_</blink> -->
-    <button class="centerx" onclick="document.getElementById('WelcomeMessage').remove()">Close</button>
+  <div>
+    <script>
+      if (window.navigator && window.navigator.plugins) {
+        window.navigator.plugins.refresh(false);
+        var numPlugins = window.navigator.plugins.length;
+        for (var i = 0; i < numPlugins; i++) {
+          var plugin = window.navigator.plugins[i];
+          if (plugin) {
+            document.write(plugin.name + '<br>');
+          }
+        }
+      }
+    </script>
   </div>
+  </div> -->
 </div>
 
 <div class="Desktop" style="user-select:none;">
-
-  <div id="appicon" tabindex="0" class="Creditstxt shortcut" style="top: 10px;">
-    <img src="C/System33/Icons/WinRedkyExclusif/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
-    <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Credits.txt</p>
-    <script>
-      $(".Creditstxt")
-      .dblclick(function(){
-        $Exe("1")
-      })
-      .doubletap(function() {
-        $Exe("1")
-      });
-      </script>
-  </div>
-  <div id="appicon" tabindex="0" class="ColorPicker shortcut" style="top: 75px;">
-    <img src="C/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
-    <p style="color: white; font-size: 8px; margin-top: 0%; text-align: center;">Color Picker</p>
-    <script>
-      $(".ColorPicker")
-      .dblclick(function(){
-        $Exe("5")
-      })
-      .doubletap(function() {
-        $Exe("5")
-      });
-      </script>
-  </div>
-  <!-- <div id="appicon" tabindex="0" ondblclick="$Exe('clock')"  class="Clock shortcut" style="top: 140px;">
-    <img src="C/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
-    <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Clock</p>
-  </div> -->
-  <div id="appicon" tabindex="0" class="WebsiteBrowser shortcut" style="top: 140px;">
-    <img src="C/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
-    <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Website Browser (W.I.P.)</p>
-    <script>
-      $(".WebsiteBrowser")
-      .dblclick(function(){
-        $Exe("websitebrowser")
-      })
-      .doubletap(function() {
-        $Exe("websitebrowser")
-      });
-      </script>
-  </div>
-  <div id="appicon" tabindex="0" class="Terminal shortcut" style="top: 205px;">
-    <img src="C/System33/Icons/Apps/Terminal.svg" alt="Terminal" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
-    <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Terminal (W.I.P.)</p>
-    <script>
-      $(".Terminal")
-      .dblclick(function(){
-        $Exe("terminal")
-      })
-      .doubletap(function() {
-        $Exe("terminal")
-      });
-      </script>
+  <div id="shortcuts">
+    <div id="appicon" tabindex="0" id="Creditstxt" class="Creditstxt shortcut" style="top: 10px;">
+      <img src="C/System33/Icons/System/text-file.png" alt="Credits.txt" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Credits.txt</p>
+      <script>
+        $(".Creditstxt")
+        .dblclick(function(){
+          $Exe("1")
+        })
+        .doubletap(function() {
+          $Exe("1")
+        });
+        </script>
+    </div>
+    <div id="appicon" tabindex="0" id="ColorPicker" class="ColorPicker shortcut" style="top: 75px;">
+      <img src="C/System33/Icons/Apps/ColorPicker.png" alt="Color Picker App" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 8px; margin-top: 0%; text-align: center;">Color Picker</p>
+      <script>
+        $(".ColorPicker")
+        .dblclick(function(){
+          $Exe("5")
+        })
+        .doubletap(function() {
+          $Exe("5")
+        });
+        </script>
+    </div>
+    <!-- <div id="appicon" tabindex="0" ondblclick="$Exe('clock')"  class="Clock shortcut" style="top: 140px;">
+      <img src="C/System33/Icons/Apps/Clock.png" alt="Clock" style="width: 35px; height: 35px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 10px; margin-top: 0%; text-align: center;">Clock</p>
+    </div> -->
+    <div id="appicon" tabindex="0" class="Notepad shortcut" style="top: 140px;">
+      <img src="C/System33/Icons/Apps/Notepad1.svg" alt="Notepad" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Notepad</p>
+      <script>
+        $(".Notepad")
+        .dblclick(function(){
+          $Edit()
+        })
+        .doubletap(function() {
+          $Edit()
+        });
+        </script>
+    </div>
+    <div id="appicon" tabindex="0" class="WebsiteBrowser shortcut" style="top: 205px;">
+      <img src="C/System33/Icons/Apps/WebsiteBrowser.svg" alt="Website Browser" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Website Browser</p>
+      <script>
+        $(".WebsiteBrowser")
+        .dblclick(function(){
+          $Exe("websitebrowser")
+        })
+        .doubletap(function() {
+          $Exe("websitebrowser")
+        });
+        </script>
+    </div>
+    <div id="appicon" tabindex="0" class="Terminal shortcut" style="top: 270px;">
+      <img src="C/System33/Icons/Apps/Terminal.svg" alt="Terminal" style="width: 30px; height: 25px; margin-left: auto; margin-right: auto; display: block;" draggable="false">
+      <p style="color: white; font-size: 9px; margin-top: 0%; text-align: center;">Terminal</p>
+      <script>
+        $(".Terminal")
+        .dblclick(function(){
+          $Exe("terminal")
+        })
+        .doubletap(function() {
+          $Exe("terminal")
+        });
+        </script>
+    </div>
   </div>
 </div>
-
-
-
 <div class="Taskbar">
     <div class="StartButton" onclick="if(document.getElementById('StartMenu').getAttribute('visible')=='false') {document.getElementById('StartMenu').style.display='block'; document.getElementById('StartMenu').setAttribute('visible', true)} else {document.getElementById('StartMenu').style.display='none'; document.getElementById('StartMenu').setAttribute('visible', false)}">
     <img src="C/System33/Images/WinRedky.png" alt="WinRedkyStart" style="width:30px; margin-top: 5%; margin-left: 5px; filter: drop-shadow(0.8px 1px 0.5px);" draggable="false">
@@ -229,7 +267,7 @@ if(hours > 11){
     </div>
     <div class="StartMenu" visible="false" id="StartMenu" style="display: none; z-index: 99;">
       <div class="StartMenuInsideLeft">
-        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" style="margin-top: 50px" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Exe('websitebrowser')">
+        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Exe('websitebrowser')">
           <img src="C/System33/Icons/Apps/WebsiteBrowser.svg" alt="WBrowser" style="width: 35px; padding-right: 10px;">
           <p style="vertical-align: middle;">Website Browser</p>
         </div>
@@ -237,14 +275,16 @@ if(hours > 11){
           <img src="C/System33/Icons/System/Fullscreen.svg" alt="FullscreenIcon" style="width: 35px; padding-right: 10px;">
           <p style="vertical-align: middle;">Fullscreen</p>
         </div>
-        <hr>
-        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; SystemFunction(2)">
-          <img src="" style="width: 35px; padding-right: 10px;">
-          <p style="vertical-align: middle;">Run</p>
-        </div>
+        <hr style="margin-left: 20px;">
         <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; $Exe('terminal')">
           <img src="C/System33/Icons/Apps/Terminal.svg" style="width: 35px; padding-right: 10px;">
           <p style="vertical-align: middle;">Command Prompt</p>
+        </div>
+      </div>
+      <div class="StartMenuInsideRight">
+        <div class="StartMenuElement" onmouseover="this.style.background='rgba(15,15,255,1)';" onmouseout="this.style.background='none';" onclick="document.getElementById('StartMenu').style.display='none'; SystemFunction(2)">
+          <img src="" style="width: 35px; padding-right: 10px;">
+          <p style="vertical-align: middle;">Run</p>
         </div>
       </div>
       <div class="StartMenuTop">
@@ -275,6 +315,27 @@ if(hours > 11){
     <div class="Notifications" style="z-index: 999; position: fixed; bottom: 70px; right: 27px;">
       
     </div>
+</div>
+<div id=ScreenSaver>
+  <script type="text/javascript">
+    var idleTime = 0;
+    $(document).ready(function () {
+        var idleInterval = setInterval(timerIncrement, 60000);
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+    });
+
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        if (idleTime > 4) {
+            window.location.reload();
+        }
+    }
+</script>
 </div>
   </Body>
  </html>
